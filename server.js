@@ -29,14 +29,16 @@ app.listen(PORT, function() {
   };
 
 app.get("/ping/:cid", async (req, res) => {
+  console.log(req.query);
+  return;
   let redirectDetails = await ACCESS_HOST(req.params.cid, req.query.traffic, req.query.redirect)
 
-  const {traffic, title, redirectLink,customer} = redirectDetails;
+  const {traffic, title, redirect,customer} = redirectDetails;
   console.log(redirectDetails)
   res.render("redirectclickers.ejs", {
     traffic,
     title,
-    redirectLink,
+    redirectLink: redirect,
     customer
   });
 })
