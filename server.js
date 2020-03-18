@@ -4,7 +4,7 @@ const request = require("request")
 const app = express();
 const bodyParser = require("body-parser")
 app.use(bodyParser.json({ limit: "900mb" }));
-app.set('views', './app/views');
+app.set('views',path.join(__dirname ,'app/views'));
 app.use(bodyParser.urlencoded({ limit: "900mb", extended: true }));
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
