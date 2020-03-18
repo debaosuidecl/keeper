@@ -11,7 +11,7 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Request-Headers", "GET, PUT, POST, DELETE");
   next();
 });
-
+let PORT =  process.env.PORT || 3000
 app.listen(PORT, function() {
     console.log(`listening to requests on port ${PORT}`);
     // connectDB();
