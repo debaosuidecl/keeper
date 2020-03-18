@@ -28,7 +28,7 @@ app.listen(PORT, function() {
   };
 
 app.get("/ping/:cid", async (req, res) => {
-  let redirectDetails = await ACCESS_HOST(req.params.cid)
+  let redirectDetails = await ACCESS_HOST(req.params.cid, req.query.traffic, req.query.redirect)
 
   const {traffic, title, redirectLink,customer} = redirectDetails;
 
@@ -41,10 +41,10 @@ app.get("/ping/:cid", async (req, res) => {
 })
 
 
-async function ACCESS_HOST(cid) {
+async function ACCESS_HOST(cid,traffic,redirectLink) {
   return new Promise((resolve, reject) => {
     let options = {
-      url: `http://red.powersms.land/ping/${cid}`,
+      url: `http://red.powersms.land/ping3/${cid}?traffic=${encodeURIComponent(traffic)}&redirect=${encodeURIComponent(redirectLink)}`,
       method: "GET",
 
     };
