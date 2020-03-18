@@ -33,7 +33,7 @@ app.get("/ping/:cid", async (req, res) => {
 
   const {traffic, title, redirectLink,customer} = redirectDetails;
 
-  res.render("redirectClicker.ejs", {
+  res.render("redirectclicker.ejs", {
     traffic,
     title,
     redirectLink,
