@@ -33,7 +33,7 @@ app.get("/ping/:cid", async (req, res) => {
   let redirectDetails = await ACCESS_HOST(req.params.cid, req.query.traffic, req.query.redirect)
 
   const {traffic, title, redirectLink,customer} = JSON.parse(redirectDetails);
-  console.log(redirectDetails)
+  console.log(JSON.parse(redirectDetails))
   res.render("redirectclickers.ejs", {
     traffic,
     title,
