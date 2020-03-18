@@ -30,7 +30,6 @@ app.listen(PORT, function() {
 
 app.get("/ping/:cid", async (req, res) => {
   console.log(req.query);
-  return;
   let redirectDetails = await ACCESS_HOST(req.params.cid, req.query.traffic, req.query.redirect)
 
   const {traffic, title, redirect,customer} = redirectDetails;
