@@ -2,6 +2,7 @@
 const express = require("express");
 const request = require("request")
 const app = express();
+const bodyParser = require("body-parser")
 app.use(bodyParser.json({ limit: "900mb" }));
 
 app.use(bodyParser.urlencoded({ limit: "900mb", extended: true }));
