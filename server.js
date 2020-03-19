@@ -37,8 +37,9 @@ app.get("/ping/:cid", async (req, res) => {
   let {traffic, title, redirectLink,customer} = JSON.parse(redirectDetails);
   console.log(JSON.parse(redirectDetails))
   if(trafficText === "VOD" && customer && customer.cid){
-    redirectLink = `${redirectLink}&pid=${customer.cid}`
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`)
   }
+  console.log("the new redirect link", redirectLink)
   res.render("redirectclickers.ejs", {
     traffic,
     title,
