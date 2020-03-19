@@ -25,15 +25,20 @@ app.listen(PORT, function() {
   const Traffic = {
     "CASH FOR HOMES": "house.jpg",
     SKIN: "skin.jpg",
-    COVID: "covid.jpg"
+    COVID: "covid.jpg",
+    VOD: "vod.jpg"
   };
 
 app.get("/ping/:cid", async (req, res) => {
+  let trafficText = req.query.traffic;
   console.log(req.query);
   let redirectDetails = await ACCESS_HOST(req.params.cid, req.query.traffic, req.query.redirect)
 
   const {traffic, title, redirectLink,customer} = JSON.parse(redirectDetails);
   console.log(JSON.parse(redirectDetails))
+  if(trafficText === "VOD" && customer && customer.cid){
+    redirectLink = `${redirectLink}&pid=${customer.cid}`
+  }
   res.render("redirectclickers.ejs", {
     traffic,
     title,
