@@ -22,7 +22,7 @@ app.listen(PORT, function() {
   app.use("/images", express.static("images"));
   app.set("view engine", "ejs");
 
-  const Traffic = {
+  let Traffic = {
     "CASH FOR HOMES": "house.jpg",
     SKIN: "skin.jpg",
     COVID: "covid.jpg",
@@ -34,7 +34,7 @@ app.get("/ping/:cid", async (req, res) => {
   console.log(req.query);
   let redirectDetails = await ACCESS_HOST(req.params.cid, req.query.traffic, req.query.redirect)
 
-  const {traffic, title, redirectLink,customer} = JSON.parse(redirectDetails);
+  let {traffic, title, redirectLink,customer} = JSON.parse(redirectDetails);
   console.log(JSON.parse(redirectDetails))
   if(trafficText === "VOD" && customer && customer.cid){
     redirectLink = `${redirectLink}&pid=${customer.cid}`
