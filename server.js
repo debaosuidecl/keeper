@@ -34,7 +34,7 @@ app.listen(PORT, function() {
 app.get("/ref", async (req, res) => {
   const {source, sender_id} = req.query;
   console.log(req.query);
-  let redirect_traffic = `http://918md-2.com/?a=4679&c=51301&s1=hastraffic&s2=${source}&s5=${sender_id}`
+  let redirect_traffic = `http://918md-2.com/?a=4679&c=51301&s2=${source}&s5=${sender_id}`
   // if(traffic=="CFH"){
     
 
