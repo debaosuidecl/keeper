@@ -29,6 +29,76 @@ app.listen(PORT, function() {
     VOD: "vod.jpg"
   };
 
+  // http://assure-link.com/ref?sender_id={sender_id}&source={source}
+
+app.get("/ref", async (req, res) => {
+  const {source, sender_id} = req.query;
+  console.log(req.query);
+  let redirect_traffic = `http://918md-2.com/?a=4679&c=51301&s1=hastraffic&s2=${source}&s5=${sender_id}`
+  // if(traffic=="CFH"){
+    
+
+  // }
+
+  // let trafficText = req.query.traffic;
+  // let redirectDetails = await ACCESS_HOST(req.params.cid, req.query.traffic, req.query.redirect)
+
+  // let {traffic, title, redirectLink,customer} = JSON.parse(redirectDetails);
+  // console.log(JSON.parse(redirectDetails))
+  // if(trafficText === "CASH FOR HOMES" && customer && customer.cid){
+    
+  //   redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`)
+  // }
+  // if(trafficText === "VOD" && customer && customer.cid){
+  //   redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`)
+  // }
+  // console.log("the new redirect link", redirectLink)
+  res.render("redirect-for.ejs", {
+    traffic:"house.jpg",
+    title: "Get Cash for your Home!",
+    redirectLink: redirect_traffic,
+  });
+})
+const PDATA = {
+  "1920114": "18"
+}
+
+  // http://assure-link.com/ref-vod?click_id={click_id}&pdata={1920114}
+app.get("/ref-vod", async (req, res) => {
+  let source = "18"
+  const {click_id, pdata} = req.query;
+  console.log(req.query);
+  if(PDATA.hasOwnProperty(pdata)){
+    source = "18"
+  }
+  let redirect_traffic = `https://101traffic.com/l.php?trf=m&p=c:dvtupna21u56_iol_&d=5e7248c8e793f611df536f69&pid=${click_id}&data4=5656&source=${source}`
+  // let redirect_traffic = `http://918md-2.com/?a=4679&c=51301&s1=hastraffic&s2=${source}&s5=${sender_id}`
+  // if(traffic=="CFH"){
+    
+
+  // }
+
+  // let trafficText = req.query.traffic;
+  // let redirectDetails = await ACCESS_HOST(req.params.cid, req.query.traffic, req.query.redirect)
+
+  // let {traffic, title, redirectLink,customer} = JSON.parse(redirectDetails);
+  // console.log(JSON.parse(redirectDetails))
+  // if(trafficText === "CASH FOR HOMES" && customer && customer.cid){
+    
+  //   redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`)
+  // }
+  // if(trafficText === "VOD" && customer && customer.cid){
+  //   redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`)
+  // }
+  // console.log("the new redirect link", redirectLink)
+  res.render("redirect-for.ejs", {
+    traffic:"vod.png",
+    title: "Free Movies For a Year!",
+    redirectLink: redirect_traffic,
+  });
+})
+
+
 app.get("/ping/:cid", async (req, res) => {
   let trafficText = req.query.traffic;
   console.log(req.query);
@@ -53,10 +123,32 @@ app.get("/ping/:cid", async (req, res) => {
 })
 
 
+
+
+
 async function ACCESS_HOST(cid,traffic,redirectLink) {
   return new Promise((resolve, reject) => {
     let options = {
       url: `http://red.powersms.land/ping3/${cid}?traffic=${encodeURIComponent(traffic)}&redirect=${encodeURIComponent(redirectLink)}`,
+      method: "GET",
+
+    };
+    request(options, function(error, response, body) {
+      // if (!error && response.statusCode == 200) {
+      //   // console.log(body);
+      //   resolve(body);
+      // } else {
+
+      resolve(body);
+    });
+  });
+}
+
+
+async function LOGClickers(cid,traffic) {
+  return new Promise((resolve, reject) => {
+    let options = {
+      url: `http://red.powersms.land/ping4/${cid}?traffic=${encodeURIComponent(traffic)}&redirect=${encodeURIComponent(redirectLink)}`,
       method: "GET",
 
     };
