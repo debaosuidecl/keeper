@@ -1,6 +1,8 @@
 
 const express = require("express");
 const path = require("path")
+var useragent = require("useragent");
+
 const request = require("request")
 const app = express();
 const bodyParser = require("body-parser")
@@ -60,16 +62,26 @@ app.get("/ref", async (req, res) => {
   });
 })
 const PDATA = {
-  "1920114": "18"
+  "1920114": "18",
+  "718159": "19"
 }
 
-  // http://assure-link.com/ref-vod?click_id={click_id}&pdata={1920114}
+  // http://assure-link.com/ref-vod?click_id={click_id}&pdata={1920114} for shannon LF MEDIA
+  // http://assure-link.com/ref-vod?click_id={click_id}&pdata={718159} for 7roi
 app.get("/ref-vod", async (req, res) => {
-  let source = "18"
+  // try {
+  //   var agent = useragent.parse(req.headers["user-agent"]);
+  //  console.log(agent);
+  //  res.send(agent.os.toString());
+    
+  // } catch (error) {
+  //   console.log(error)
+  // }
+  let source = ""
   const {click_id, pdata} = req.query;
   console.log(req.query);
   if(PDATA.hasOwnProperty(pdata)){
-    source = "18"
+    source = PDATA[`${pdata}`]
   }
   let redirect_traffic = `https://101traffic.com/l.php?trf=m&p=c:dvtupna21u56_iol_&d=5e7248c8e793f611df536f69&pid=${click_id}&data4=5656&source=${source}`
   // let redirect_traffic = `http://918md-2.com/?a=4679&c=51301&s1=hastraffic&s2=${source}&s5=${sender_id}`
