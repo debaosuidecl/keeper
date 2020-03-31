@@ -30,13 +30,24 @@ app.listen(PORT, function() {
     COVID: "covid.jpg",
     VOD: "vod.jpg"
   };
-
-  // http://assure-link.com/ref?sender_id={sender_id}&source={source}
+  const PDATA = {
+    "412294": "17",// YANCY
+    "1920114": "18", // SHANNON
+    "718159": "19", //7ROI
+    "25114325": "20", // DAVID GLENN
+  }
+  // http://assure-link.com/ref?click_id={click_id}&pdata=25114325 GLENN
 
 app.get("/ref", async (req, res) => {
-  const {source, sender_id} = req.query;
+  // const {click_id} = req.query;
+  let source = ""
+  const {click_id, pdata} = req.query;
+  // console.log(req.query)
   console.log(req.query);
-  let redirect_traffic = `http://918md-2.com/?a=4679&c=51301&s2=${source}&s5=${sender_id}`
+  if(PDATA.hasOwnProperty(pdata)){
+    source = PDATA[`${pdata}`]
+  }
+  let redirect_traffic = `http://918md-2.com/?a=4679&c=51301&s2=${source}&s5=${click_id}`
   // if(traffic=="CFH"){
     
 
@@ -61,13 +72,11 @@ app.get("/ref", async (req, res) => {
     redirectLink: redirect_traffic,
   });
 })
-const PDATA = {
-  "1920114": "18",
-  "718159": "19"
-}
 
-  // http://assure-link.com/ref-vod?click_id={click_id}&pdata={1920114} for shannon LF MEDIA
-  // http://assure-link.com/ref-vod?click_id={click_id}&pdata={718159} for 7roi
+
+  // http://assure-link.com/ref-vod?click_id={click_id}&pdata=1920114 for shannon LF MEDIA
+  // http://assure-link.com/ref-vod?click_id={click_id}&pdata=718159 for 7roi
+  // http://assure-link.com/ref-vod?click_id={click_id}&pdata=25114325 for Glenn
 app.get("/ref-vod", async (req, res) => {
   // try {
   //   var agent = useragent.parse(req.headers["user-agent"]);
@@ -84,25 +93,7 @@ app.get("/ref-vod", async (req, res) => {
     source = PDATA[`${pdata}`]
   }
   let redirect_traffic = `https://101traffic.com/l.php?trf=m&p=c:dvtupna21u56_iol_&d=5e7248c8e793f611df536f69&pid=${click_id}&data4=5656&source=${source}`
-  // let redirect_traffic = `http://918md-2.com/?a=4679&c=51301&s1=hastraffic&s2=${source}&s5=${sender_id}`
-  // if(traffic=="CFH"){
-    
 
-  // }
-
-  // let trafficText = req.query.traffic;
-  // let redirectDetails = await ACCESS_HOST(req.params.cid, req.query.traffic, req.query.redirect)
-
-  // let {traffic, title, redirectLink,customer} = JSON.parse(redirectDetails);
-  // console.log(JSON.parse(redirectDetails))
-  // if(trafficText === "CASH FOR HOMES" && customer && customer.cid){
-    
-  //   redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`)
-  // }
-  // if(trafficText === "VOD" && customer && customer.cid){
-  //   redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`)
-  // }
-  // console.log("the new redirect link", redirectLink)
   res.render("redirect-for.ejs", {
     traffic:"vod.png",
     title: "Free Movies For a Year!",
@@ -135,7 +126,29 @@ app.get("/ping/:cid", async (req, res) => {
 })
 
 
+// app.get("/email/unsubscribe", async (req, res) => {
+//   // try {
+//   //   var agent = useragent.parse(req.headers["user-agent"]);
+//   //  console.log(agent);
+//   //  res.send(agent.os.toString());
+    
+//   // } catch (error) {
+//   //   console.log(error)
+//   // }
+//   let source = ""
+//   const {click_id, pdata} = req.query;
+//   console.log(req.query);
+//   if(PDATA.hasOwnProperty(pdata)){
+//     source = PDATA[`${pdata}`]
+//   }
+//   let redirect_traffic = `https://101traffic.com/l.php?trf=m&p=c:dvtupna21u56_iol_&d=5e7248c8e793f611df536f69&pid=${click_id}&data4=5656&source=${source}`
 
+//   res.render("redirect-for.ejs", {
+//     traffic:"vod.png",
+//     title: "Free Movies For a Year!",
+//     redirectLink: redirect_traffic,
+//   });
+// })
 
 
 async function ACCESS_HOST(cid,traffic,redirectLink) {
