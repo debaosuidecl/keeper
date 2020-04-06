@@ -26,7 +26,7 @@ app.listen(PORT, function() {
 
   let Traffic = {
     "CASH FOR HOMES": "house.jpg",
-    SKIN: "skin.jpg",
+    SKIN: "skin.png",
     COVID: "covid.jpg",
     VOD: "vod.jpg"
   };
