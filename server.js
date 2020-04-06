@@ -28,7 +28,8 @@ app.listen(PORT, function() {
     "CASH FOR HOMES": "house.jpg",
     SKIN: "skin.png",
     COVID: "covid.jpg",
-    VOD: "vod.jpg"
+    VOD: "vod.jpg",
+    KETO: "keto.jpeg"
   };
   const PDATA = {
     "412294": "17",// YANCY
