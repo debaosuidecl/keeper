@@ -28,13 +28,14 @@ app.listen(PORT, function() {
     "CASH FOR HOMES": "house.jpg",
     SKIN: "skin.png",
     COVID: "covid.jpg",
-    VOD: "vod.jpg",
+    VOD: "movieflix.png",
     KETO: "keto.jpeg"
   };
   const PDATA = {
     "412294": "17",// YANCY
     "1920114": "18", // SHANNON
     "718159": "19", //7ROI
+    "2514": "16",
     "25114325": "20", // DAVID GLENN
   }
   // http://assure-link.com/ref?click_id={click_id}&pdata=25114325 GLENN
