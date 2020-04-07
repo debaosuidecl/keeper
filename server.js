@@ -119,6 +119,9 @@ app.get("/ping/:cid", async (req, res) => {
   if(trafficText === "VOD" && customer && customer.cid){
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`)
   }
+  if((trafficText === "SKIN" && customer && customer.cid) || (trafficText === "KETO" && customer && customer.cid) || (trafficText === "CBD" && customer && customer.cid)){
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`)
+  }
   console.log("the new redirect link", redirectLink)
   res.render("redirectclickers.ejs", {
     traffic,
