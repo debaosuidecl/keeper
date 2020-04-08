@@ -110,11 +110,11 @@ app.get("/ref-vod", async (req, res) => {
 // &d13={address1}&d14={address2}&d15={city}&d16={state}&d17={zippost}
 app.get("/ping/:cid", async (req, res) => {
   let trafficText = req.query.traffic;
-  console.log(req.query);
+  // console.log(req.query);
   let redirectDetails = await ACCESS_HOST(req.params.cid, req.query.traffic, req.query.redirect)
 
   let {traffic, title, redirectLink,customer} = JSON.parse(redirectDetails);
-  console.log(JSON.parse(redirectDetails))
+  // console.log(JSON.parse(redirectDetails))
   if(trafficText === "CASH FOR HOMES" && customer && customer.cid){
     
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`)
@@ -136,8 +136,8 @@ app.get("/ping/:cid", async (req, res) => {
     let customerzip = customer.zip || ""
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`)
     redirectLink = `${redirectLink}d2=${customer.email || ""}&d3=${customer.first_name || ""}&d5=${customer.last_name || ""}&d10=${phonecode}&d11=${phoneprefix}&d12=${phonesuffix}&d13=${encodeURIComponent(customeraddress)}&d15=${encodeURIComponent(customercity)}&d16=${encodeURIComponent(customerstate)}&d17=${customerzip}&d18=SOI`
+    console.log("the new redirect link", redirectLink)
   }
-  console.log("the new redirect link", redirectLink)
   res.render("redirectclickers.ejs", {
     traffic,
     title,
