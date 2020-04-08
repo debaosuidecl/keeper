@@ -35,12 +35,12 @@ app.listen(PORT, function() {
     "412294": "17",// YANCY
     "1920114": "18", // SHANNON
     "718159": "19", //7ROI
-    "2514": "16",
+    "2514": "16", // Ben
     "25114325": "20", // DAVID GLENN
   }
   // http://assure-link.com/ref?click_id={click_id}&pdata=25114325 GLENN
   // http://assure-link.com/ref?click_id={click_id}&pdata=412294 Yancy
-
+  // http://assure-link.com/ref?click_id={click_id}&pdata=2514
 app.get("/ref", async (req, res) => {
   // const {click_id} = req.query;
   let source = ""
@@ -104,7 +104,10 @@ app.get("/ref-vod", async (req, res) => {
   });
 })
 
-
+// https://101traffic.com/l.php?trf=m&p=c:1ighcaypohstx6b9x&d=5e850bd73c92e656601dd3a2&pid={click_id}
+// &d1={data1}&d4=5757&d2={email}&d3={firstname}&d5={lastname}&d6={gender}&d7={dobmonth}
+// &d8={dobday}&d9={dobyear}&d10={phonecode}&d11={phoneprefix}&d12={phonesuffix}
+// &d13={address1}&d14={address2}&d15={city}&d16={state}&d17={zippost}
 app.get("/ping/:cid", async (req, res) => {
   let trafficText = req.query.traffic;
   console.log(req.query);
@@ -121,6 +124,18 @@ app.get("/ping/:cid", async (req, res) => {
   }
   if((trafficText === "SKIN" && customer && customer.cid) || (trafficText === "KETO" && customer && customer.cid) || (trafficText === "CBD" && customer && customer.cid)){
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`)
+  }
+  if(trafficText === "VOD-SOI"){
+    let phone = customer.phone || ""
+    let phonecode = phone.substring(1,4);
+    let phoneprefix = phone.substring(4,7);
+    let phonesuffix = phone.substring(7);
+    let customeraddress = customer.address || ""
+    let customercity = customer.city || ""
+    let customerstate = customer.state || ""
+    let customerzip = customer.zip || ""
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`)
+    redirectLink = `${redirectLink}&d2=${customer.email || ""}&d3=${customer.first_name || ""}&d5=${customer.last_name || ""}&d10=${phonecode}&d11=${phoneprefix}&d12=${phonesuffix}&d13=${encodeURIComponent(customeraddress)}&d15=${encodeURIComponent(customercity)}&d16=${encodeURIComponent(customerstate)}&d17=${customerzip}&d18=SOI`
   }
   console.log("the new redirect link", redirectLink)
   res.render("redirectclickers.ejs", {
