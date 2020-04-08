@@ -135,7 +135,7 @@ app.get("/ping/:cid", async (req, res) => {
     let customerstate = customer.state || ""
     let customerzip = customer.zip || ""
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`)
-    redirectLink = encodeURIComponent(`${redirectLink}d2=${customer.email || ""}&d3=${customer.first_name || ""}&d5=${customer.last_name || ""}&d10=${phonecode}&d11=${phoneprefix}&d12=${phonesuffix}&d13=${encodeURIComponent(customeraddress)}&d15=${encodeURIComponent(customercity)}&d16=${encodeURIComponent(customerstate)}&d17=${customerzip}&d18=SOI`)
+    redirectLink = `${redirectLink}d2=${customer.email || ""}&d3=${customer.first_name || ""}&d5=${customer.last_name || ""}&d10=${phonecode}&d11=${phoneprefix}&d12=${phonesuffix}&d13=${encodeURIComponent(customeraddress)}&d15=${encodeURIComponent(customercity)}&d16=${encodeURIComponent(customerstate)}&d17=${customerzip}&d18=SOI`
     console.log("the new redirect link", redirectLink)
   }
   res.render("redirectclickers.ejs", {
