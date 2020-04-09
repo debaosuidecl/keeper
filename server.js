@@ -38,6 +38,28 @@ app.listen(PORT, function() {
     "2514": "16", // Ben
     "25114325": "20", // DAVID GLENN
   }
+
+
+
+
+  app.get("/pingmeta/:cid", async (req, res) => {
+    let trafficText = req.query.traffic;
+    let redirect = req.query.redirect;
+    let newredirect = `http://assure-link.com/ping/${req.params.cid}?redirect=${encodeURIComponent(redirect)}&traffic=${trafficText}`
+    res.render("redmeta.ejs", {
+      newredirect
+    });
+  })
+
+
+
+
+
+
+
+
+
+
   // http://assure-link.com/ref?click_id={click_id}&pdata=25114325 GLENN
   // http://assure-link.com/ref?click_id={click_id}&pdata=412294 Yancy
   // http://assure-link.com/ref?click_id={click_id}&pdata=2514
