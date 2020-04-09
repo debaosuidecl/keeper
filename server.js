@@ -50,12 +50,16 @@ var ip = req.headers['x-forwarded-for'] ||
 })
 
   app.get("/pingmeta/:cid", async (req, res) => {
+    var ip = req.headers['x-forwarded-for'] || 
+     req.connection.remoteAddress || 
+     req.socket.remoteAddress ||
+     (req.connection.socket ? req.connection.socket.remoteAddress : null);
     let trafficText = req.query.traffic;
     let redirect = req.query.redirect;
     let redirectDetails = await ACCESS_HOST_META(req.params.cid, req.query.traffic, req.query.redirect)
     let {traffic, title,customer} = JSON.parse(redirectDetails);
 
-    let redirectLink = `http://assure-link.com/ping/${req.params.cid}?redirect=${encodeURIComponent(redirect)}&traffic=${trafficText}`
+    let redirectLink = `http://assure-link.com/ping/${req.params.cid}?redirect=${encodeURIComponent(redirect)}&traffic=${trafficText}&ip=${ip}`
 
     res.render("redmeta.ejs", {
       traffic,
@@ -148,9 +152,16 @@ app.get("/ref-vod", async (req, res) => {
 // &d8={dobday}&d9={dobyear}&d10={phonecode}&d11={phoneprefix}&d12={phonesuffix}
 // &d13={address1}&d14={address2}&d15={city}&d16={state}&d17={zippost}
 app.get("/ping/:cid", async (req, res) => {
+  let newip = req.query.ip
+  if(!newip){
+    newip =  req.headers['x-forwarded-for'] || 
+    req.connection.remoteAddress || 
+    req.socket.remoteAddress ||
+    (req.connection.socket ? req.connection.socket.remoteAddress : null);
+  }
   let trafficText = req.query.traffic;
   // console.log(req.query);
-  let redirectDetails = await ACCESS_HOST(req.params.cid, req.query.traffic, req.query.redirect)
+  let redirectDetails = await ACCESS_HOST(req.params.cid, req.query.traffic, req.query.redirect, newip)
 
   let {traffic, title, redirectLink,customer} = JSON.parse(redirectDetails);
   // console.log(JSON.parse(redirectDetails))
@@ -211,10 +222,10 @@ app.get("/ping/:cid", async (req, res) => {
 // })
 
 
-async function ACCESS_HOST(cid,traffic,redirectLink) {
+async function ACCESS_HOST(cid,traffic,redirectLink, ip) {
   return new Promise((resolve, reject) => {
     let options = {
-      url: `http://red.powersms.land/ping3/${cid}?traffic=${encodeURIComponent(traffic)}&redirect=${encodeURIComponent(redirectLink)}`,
+      url: `http://red.powersms.land/ping3/${cid}?traffic=${encodeURIComponent(traffic)}&redirect=${encodeURIComponent(redirectLink)}&ip=${encodeURIComponent(ip)}`,
       method: "GET",
 
     };
