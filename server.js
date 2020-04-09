@@ -45,10 +45,20 @@ app.listen(PORT, function() {
   app.get("/pingmeta/:cid", async (req, res) => {
     let trafficText = req.query.traffic;
     let redirect = req.query.redirect;
-    let newredirect = `http://assure-link.com/ping/${req.params.cid}?redirect=${encodeURIComponent(redirect)}&traffic=${trafficText}`
+    let redirectDetails = await ACCESS_HOST_META(req.params.cid, req.query.traffic, req.query.redirect)
+    let {traffic, title,customer} = JSON.parse(redirectDetails);
+
+    let redirectLink = `http://assure-link.com/ping/${req.params.cid}?redirect=${encodeURIComponent(redirect)}&traffic=${trafficText}`
+
     res.render("redmeta.ejs", {
-      newredirect
+      traffic,
+      title,
+      redirectLink,
+      customer
     });
+    // res.render("redmeta.ejs", {
+    //   newredirect
+    // });
   })
 
 
@@ -198,6 +208,24 @@ async function ACCESS_HOST(cid,traffic,redirectLink) {
   return new Promise((resolve, reject) => {
     let options = {
       url: `http://red.powersms.land/ping3/${cid}?traffic=${encodeURIComponent(traffic)}&redirect=${encodeURIComponent(redirectLink)}`,
+      method: "GET",
+
+    };
+    request(options, function(error, response, body) {
+      // if (!error && response.statusCode == 200) {
+      //   // console.log(body);
+      //   resolve(body);
+      // } else {
+
+      resolve(body);
+    });
+  });
+}
+
+async function ACCESS_HOST_META(cid,traffic,redirectLink) {
+  return new Promise((resolve, reject) => {
+    let options = {
+      url: `http://red.powersms.land/pingmeta/${cid}?traffic=${encodeURIComponent(traffic)}&redirect=${encodeURIComponent(redirectLink)}`,
       method: "GET",
 
     };
