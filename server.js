@@ -40,7 +40,9 @@ app.listen(PORT, function() {
   }
 
 
-
+app.get("/ip-test", async (req,res)=> {
+  console.log(req.headers['X-Forwarded-For'], "NNNNNNNNNNNNNNNNNNNAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+})
 
   app.get("/pingmeta/:cid", async (req, res) => {
     let trafficText = req.query.traffic;
