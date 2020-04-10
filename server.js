@@ -176,7 +176,7 @@ app.get("/ping/:cid", async (req, res) => {
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`)
   }
   if (trafficText === "IMMUNITY"){
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`)
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`)
   }
   if(trafficText === "VOD-SOI"){
     let phone = customer.phone || ""
