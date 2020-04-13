@@ -37,6 +37,7 @@ app.listen(PORT, function() {
     "718159": "19", //7ROI
     "2514": "16", // Ben
     "25114325": "20", // DAVID GLENN
+    "1125125": "21" // Kyle
   }
 
 
@@ -67,9 +68,6 @@ var ip = req.headers['x-forwarded-for'] ||
       redirectLink,
       customer
     });
-    // res.render("redmeta.ejs", {
-    //   newredirect
-    // });
   })
 
 
@@ -84,6 +82,7 @@ var ip = req.headers['x-forwarded-for'] ||
   // http://assure-link.com/ref?click_id={click_id}&pdata=25114325 GLENN
   // http://assure-link.com/ref?click_id={click_id}&pdata=412294 Yancy
   // http://assure-link.com/ref?click_id={click_id}&pdata=2514
+  // http://assure-link.com/ref?click_id={click_id}&pdata=1125125
 app.get("/ref", async (req, res) => {
   // const {click_id} = req.query;
   let source = ""
