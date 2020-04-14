@@ -196,7 +196,7 @@ app.get("/ref-gummies", async (req, res) => {
     source = PDATA[`${pdata}`]
   }
   // let redirect_traffic = `http://918md-2.com/?a=4679&c=51301&s2=${source}&s5=${click_id}`
-  let redirect_traffic = `http://www.track4cr.com/click.track?CID=426105&AFID=434208&AffiliateReferenceID=${click_id}&SID=${source}`
+  let redirect_traffic = `http://www.track4cr.com/click.track?CID=426105&AFID=434208&AffiliateReferenceID=${click_id}&SID=${source}&subid1=aff`
   // if(traffic=="CFH"){
     
   res.render("redirect-for.ejs", {
