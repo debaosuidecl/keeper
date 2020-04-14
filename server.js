@@ -95,22 +95,6 @@ app.get("/ref", async (req, res) => {
   let redirect_traffic = `http://918md-2.com/?a=4679&c=51301&s2=${source}&s5=${click_id}`
   // if(traffic=="CFH"){
     
-
-  // }
-
-  // let trafficText = req.query.traffic;
-  // let redirectDetails = await ACCESS_HOST(req.params.cid, req.query.traffic, req.query.redirect)
-
-  // let {traffic, title, redirectLink,customer} = JSON.parse(redirectDetails);
-  // console.log(JSON.parse(redirectDetails))
-  // if(trafficText === "CASH FOR HOMES" && customer && customer.cid){
-    
-  //   redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`)
-  // }
-  // if(trafficText === "VOD" && customer && customer.cid){
-  //   redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`)
-  // }
-  // console.log("the new redirect link", redirectLink)
   res.render("redirect-for.ejs", {
     traffic:"house.jpg",
     title: "Get Cash for your Home!",
@@ -201,30 +185,28 @@ app.get("/ping/:cid", async (req, res) => {
   });
 })
 
-
-// app.get("/email/unsubscribe", async (req, res) => {
-//   // try {
-//   //   var agent = useragent.parse(req.headers["user-agent"]);
-//   //  console.log(agent);
-//   //  res.send(agent.os.toString());
+// http://assure-link.com/ref-gummies?click_id={click_id}&pdata=2514
+app.get("/ref-gummies", async (req, res) => {
+  // const {click_id} = req.query;
+  let source = ""
+  const {click_id, pdata} = req.query;
+  // console.log(req.query)
+  console.log(req.query);
+  if(PDATA.hasOwnProperty(pdata)){
+    source = PDATA[`${pdata}`]
+  }
+  // let redirect_traffic = `http://918md-2.com/?a=4679&c=51301&s2=${source}&s5=${click_id}`
+  let redirect_traffic = `http://www.track4cr.com/click.track?CID=426105&AFID=434208&AffiliateReferenceID=${click_id}&SID=${source}`
+  // if(traffic=="CFH"){
     
-//   // } catch (error) {
-//   //   console.log(error)
-//   // }
-//   let source = ""
-//   const {click_id, pdata} = req.query;
-//   console.log(req.query);
-//   if(PDATA.hasOwnProperty(pdata)){
-//     source = PDATA[`${pdata}`]
-//   }
-//   let redirect_traffic = `https://101traffic.com/l.php?trf=m&p=c:dvtupna21u56_iol_&d=5e7248c8e793f611df536f69&pid=${click_id}&data4=5656&source=${source}`
+  res.render("redirect-for.ejs", {
+    traffic:"cbdgummies.png",
+    title: "Get down with CBD Gummies!",
+    redirectLink: redirect_traffic,
+  });
+})
 
-//   res.render("redirect-for.ejs", {
-//     traffic:"vod.png",
-//     title: "Free Movies For a Year!",
-//     redirectLink: redirect_traffic,
-//   });
-// })
+
 
 
 async function ACCESS_HOST(cid,traffic,redirectLink, ip) {
