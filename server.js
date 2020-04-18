@@ -161,6 +161,15 @@ app.get("/ping/:cid", async (req, res) => {
   if (trafficText === "IMMUNITY"){
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`)
   }
+  if (trafficText === "ED-OS"){
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`)
+    
+  }
+  if (trafficText === "KETO-OS"){
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`)
+    redirectLink = "https://foxnews.press?r=" + encodeURIComponent(redirectLink)
+    traffic="keto.jpeg"
+  }
   if (trafficText === "CBD-GUMMIES"){
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`)
     redirectLink = "https://foxnews.blog?r=" + encodeURIComponent(redirectLink)
