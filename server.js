@@ -176,7 +176,7 @@ app.get("/ping/:cid", async (req, res) => {
       let kzip = customer.zip || "";
       let kemail = customer.email || "";
       let kphone = customer.phone || ""
-      redirectLink = redirectLink +  `&shipping_firstname=${kFirstName}&shipping_lastname=${kLastName}&shipping_city=${kcity}&shipping_state=${kstate}&shipping_zip=${kzip}&shipping_email=${kemail}&shipping_phone=${kphone}&shipping_address1=${kaddress}`
+      redirectLink = redirectLink +  `&shipping_firstname=${kFirstName}&shipping_lastname=${kLastName}&shipping_city=${kcity}&shipping_state=${kstate}&shipping_zipcode=${kzip}&shipping_email=${kemail}&shipping_phone=${kphone}&shipping_address1=${kaddress}`
     } catch (error) {
       console.log(error)
     }
