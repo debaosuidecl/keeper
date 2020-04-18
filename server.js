@@ -167,6 +167,19 @@ app.get("/ping/:cid", async (req, res) => {
   }
   if (trafficText === "KETO-OS"){
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`)
+    try {
+      let kFirstName = customer.first_name || "";
+      let kLastName = customer.last_name || "";
+      let kaddress = customer.address || "";
+      let kcity = customer.city || "";
+      let kstate = customer.state || "";
+      let kzip = customer.zip || "";
+      let kemail = customer.email || "";
+      let kphone = customer.phone || ""
+      redirectLink = redirectLink +  `&shipping_firstname=${kFirstName}&shipping_lastname=${kLastName}&shipping_address1=${kaddress}&shipping_address2=${kcity}&shipping_city=${kcity}&shipping_state=${kstate}&shipping_zip=${kzip}&shipping_email=${kemail}&shipping_phone=${kphone}`
+    } catch (error) {
+      console.log(error)
+    }
     redirectLink = "https://foxnews.press?r=" + encodeURIComponent(redirectLink)
     traffic="keto.jpeg"
   }
