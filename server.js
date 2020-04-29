@@ -152,6 +152,10 @@ app.get("/ping/:cid", async (req, res) => {
     
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`)
   }
+  if(trafficText === "IPHONE-7ROI" && customer && customer.cid){
+    
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`)
+  }
   if(trafficText === "VISA-7ROI" && customer && customer.cid){
     
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`)
