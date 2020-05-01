@@ -175,7 +175,8 @@ app.get("/ping/:cid", async (req, res) => {
   }
   if (trafficText === "IPHONE-712"){
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`)
-    
+    redirectLink = "https://myphoneispretty.com?r=" + encodeURIComponent(redirectLink)
+
   }
   if (trafficText === "KETO-OS"){
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`)
