@@ -1,7 +1,10 @@
 const express = require("express");
 const path = require("path");
 var useragent = require("useragent");
-
+const DeviceDetector = require("node-device-detector");
+const userAgent =
+  "Mozilla/5.0 (Linux; Android 5.0; NX505J Build/KVT49L) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.78 Mobile Safari/537.36";
+const detector = new DeviceDetector();
 const request = require("request");
 const app = express();
 const bodyParser = require("body-parser");
@@ -47,8 +50,9 @@ app.get("/ip-test", async (req, res) => {
     (req.connection.socket ? req.connection.socket.remoteAddress : null);
   let agent = useragent.parse(req.headers["user-agent"]);
   // let device = agent.device.toJSON(); // returns an object
+  const result = detector.detect(agent);
 
-  res.send(agent);
+  res.json({ agent, result });
   console.log(
     ip,
     "NNNNNNNNNNNNNNNNNNNAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
