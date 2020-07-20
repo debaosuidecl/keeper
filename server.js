@@ -45,7 +45,10 @@ app.get("/ip-test", async (req, res) => {
     req.connection.remoteAddress ||
     req.socket.remoteAddress ||
     (req.connection.socket ? req.connection.socket.remoteAddress : null);
-  res.send(ip);
+  let agent = useragent.parse(req.headers["user-agent"]);
+  let device = agent.device.toJSON(); // returns an object
+
+  res.send(device);
   console.log(
     ip,
     "NNNNNNNNNNNNNNNNNNNAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
