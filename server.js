@@ -2,8 +2,6 @@ const express = require("express");
 const path = require("path");
 var useragent = require("useragent");
 const DeviceDetector = require("node-device-detector");
-const userAgent =
-  "Mozilla/5.0 (Linux; Android 5.0; NX505J Build/KVT49L) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.78 Mobile Safari/537.36";
 const detector = new DeviceDetector();
 const request = require("request");
 const app = express();
@@ -41,7 +39,9 @@ const PDATA = {
   "25114325": "20", // DAVID GLENN
   "1125125": "21", // Kyle
 };
-
+const SUBSENDERMAP = {
+  "5f15983c85c36e5200a51f40": "http://jilead.red.powersms.land/pingmeta",
+};
 app.get("/ip-test", async (req, res) => {
   var ip =
     req.headers["x-forwarded-for"] ||
@@ -52,11 +52,7 @@ app.get("/ip-test", async (req, res) => {
   // let device = agent.device.toJSON(); // returns an object
   const result = detector.detect(agent);
 
-  res.json({ agent, result });
-  console.log(
-    ip,
-    "NNNNNNNNNNNNNNNNNNNAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
-  );
+  res.json({ result });
 });
 
 app.get("/pingmeta/:cid", async (req, res) => {
@@ -67,11 +63,26 @@ app.get("/pingmeta/:cid", async (req, res) => {
     (req.connection.socket ? req.connection.socket.remoteAddress : null);
   let trafficText = req.query.traffic;
   let redirect = req.query.redirect;
-  let redirectDetails = await ACCESS_HOST_META(
-    req.params.cid,
-    req.query.traffic,
-    req.query.redirect
-  );
+
+  let redirectDetails = "";
+  if (req.query.uid) {
+    try {
+      redirectDetails = await ACCESS_HOST_META(
+        req.params.cid,
+        req.query.traffic,
+        req.query.redirect,
+        SUBSENDERMAP[req.query.uid]
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    redirectDetails = await ACCESS_HOST_META(
+      req.params.cid,
+      req.query.traffic,
+      req.query.redirect
+    );
+  }
   let { traffic, title, customer } = JSON.parse(redirectDetails);
 
   let redirectLink = `http://assure-link.com/ping/${
@@ -152,12 +163,29 @@ app.get("/ping/:cid", async (req, res) => {
       (req.connection.socket ? req.connection.socket.remoteAddress : null);
   }
   let trafficText = req.query.traffic;
+  let browser = "";
+  let device = "";
+  let OS = "";
+  try {
+    let agent = useragent.parse(req.headers["user-agent"]);
+    // let device = agent.device.toJSON(); // returns an object
+    let result = detector.detect(agent);
+    browser = result.client.name || "";
+    device = result.device.model || result.device.type || "";
+    OS = result.os.name || "";
+  } catch (error) {
+    console.log(error);
+  }
+  // res.json({  result });
   // console.log(req.query);
   let redirectDetails = await ACCESS_HOST(
     req.params.cid,
     req.query.traffic,
     req.query.redirect,
-    newip
+    newip,
+    browser,
+    device,
+    OS
   );
 
   let { traffic, title, redirectLink, customer } = JSON.parse(redirectDetails);
@@ -265,14 +293,27 @@ app.get("/ref-gummies", async (req, res) => {
   });
 });
 
-async function ACCESS_HOST(cid, traffic, redirectLink, ip) {
+async function ACCESS_HOST(
+  cid,
+  traffic,
+  redirectLink,
+  ip,
+  browser,
+  device,
+  OS
+) {
+  // browser,
+  // device,
+  // OS
   return new Promise((resolve, reject) => {
     let options = {
       url: `http://red.powersms.land/ping3/${cid}?traffic=${encodeURIComponent(
         traffic
       )}&redirect=${encodeURIComponent(redirectLink)}&ip=${encodeURIComponent(
         ip
-      )}`,
+      )}&browser=${encodeURIComponent(browser)}&device=${encodeURIComponent(
+        device
+      )}&OS=${encodeURIComponent(OS)}`,
       method: "GET",
     };
     request(options, function (error, response, body) {
@@ -286,10 +327,15 @@ async function ACCESS_HOST(cid, traffic, redirectLink, ip) {
   });
 }
 
-async function ACCESS_HOST_META(cid, traffic, redirectLink) {
+async function ACCESS_HOST_META(
+  cid,
+  traffic,
+  redirectLink,
+  url = `http://red.powersms.land/pingmeta`
+) {
   return new Promise((resolve, reject) => {
     let options = {
-      url: `http://red.powersms.land/pingmeta/${cid}?traffic=${encodeURIComponent(
+      url: `${url}/${cid}?traffic=${encodeURIComponent(
         traffic
       )}&redirect=${encodeURIComponent(redirectLink)}`,
       method: "GET",
