@@ -2,6 +2,8 @@ const express = require("express");
 const path = require("path");
 var useragent = require("useragent");
 const DeviceDetector = require("node-device-detector");
+var whois = require("node-whois");
+
 const detector = new DeviceDetector();
 const request = require("request");
 const app = express();
@@ -32,15 +34,32 @@ let Traffic = {
   KETO: "keto.jpeg",
 };
 const PDATA = {
-  "412294": "17", // YANCY
-  "1920114": "18", // SHANNON
-  "718159": "19", //7ROI
-  "2514": "16", // Ben
-  "25114325": "20", // DAVID GLENN
-  "1125125": "21", // Kyle
+  412294: "17", // YANCY
+  1920114: "18", // SHANNON
+  718159: "19", //7ROI
+  2514: "16", // Ben
+  25114325: "20", // DAVID GLENN
+  1125125: "21", // Kyle
 };
 const SUBSENDERMAP = {
   "5f15983c85c36e5200a51f40": "http://jilead.red.powersms.land/pingmeta",
+};
+const whoislookup = async (ip) => {
+  return new Promise((res, rej) => {
+    whois.lookup(ip, function (err, data) {
+      console.log(err, data);
+
+      if (err) {
+        rej(err);
+      }
+
+      if (data) {
+        const reject = data.indexOf("Google LLC") !== -1; // reject if there is google
+
+        res(reject);
+      }
+    });
+  });
 };
 app.get("/ip-test", async (req, res) => {
   var ip =
@@ -64,6 +83,15 @@ app.get("/pingmeta/:cid", async (req, res) => {
   let trafficText = req.query.traffic;
   let redirect = req.query.redirect;
 
+  if (req.query.traffic === "SKIN") {
+    if (ip) {
+      const rejectIP = await whoislookup(ip);
+
+      if (rejectIP) {
+        return console.log("you are from google", ip, rejectIP);
+      }
+    }
+  }
   let redirectDetails = "";
   if (req.query.uid) {
     try {
