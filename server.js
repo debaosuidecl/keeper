@@ -89,7 +89,11 @@ app.get("/pingmeta/:cid", async (req, res) => {
 
       if (rejectIP) {
         return console.log("you are from google", ip, rejectIP);
+      } else {
+        console.log(ip, "not google");
       }
+    } else {
+      console.log(great, "not skin");
     }
   }
   let redirectDetails = "";
