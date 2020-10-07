@@ -256,6 +256,12 @@ app.get("/ping/:cid", async (req, res) => {
       `https://myphoneispretty.com?popclick=${req.params.cid}&r=` +
       encodeURIComponent(redirectLink);
   }
+  if (trafficText === "7ROI-Skin-B") {
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
+    redirectLink =
+      `https://centerfoldskin.com/?popclick=${req.params.cid}&r=` +
+      encodeURIComponent(redirectLink);
+  }
 
   if (trafficText === "KETO-OS") {
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
