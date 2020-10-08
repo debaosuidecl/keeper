@@ -262,6 +262,12 @@ app.get("/ping/:cid", async (req, res) => {
       `https://centerfoldskin.com/?popclick=${req.params.cid}&r=` +
       encodeURIComponent(redirectLink);
   }
+  if (trafficText === "KETOMATIC") {
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
+    redirectLink =
+      `https://procore-keto.com?popclick=${req.params.cid}&r=` +
+      encodeURIComponent(redirectLink);
+  }
 
   if (trafficText === "KETO-OS") {
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
