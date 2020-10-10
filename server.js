@@ -83,7 +83,7 @@ app.get("/pingmeta/:cid", async (req, res) => {
   let trafficText = req.query.traffic;
   let redirect = req.query.redirect;
 
-  if (req.query.traffic === "SKIN") {
+  if (req.query.traffic === "SKIN-DISABLED") {
     if (ip) {
       const rejectIP = await whoislookup(ip);
 
