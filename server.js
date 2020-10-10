@@ -235,11 +235,17 @@ app.get("/ping/:cid", async (req, res) => {
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
   }
   if (
-    (trafficText === "SKIN" && customer && customer.cid) ||
     (trafficText === "KETO" && customer && customer.cid) ||
     (trafficText === "CBD" && customer && customer.cid)
   ) {
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+  }
+
+  if (trafficText === "SKIN") {
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
+    redirectLink =
+      `https://anti-aging-potion.com/?popclick=${req.params.cid}&r=` +
+      encodeURIComponent(redirectLink);
   }
   if (trafficText === "IMMUNITY") {
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
