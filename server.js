@@ -250,7 +250,7 @@ app.get("/ping/:cid", async (req, res) => {
   if (trafficText === "IMMUNITY") {
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
   }
-  if (trafficText === "Boyscouts_HT") {
+  if (trafficText === "Boyscouts_HT" || trafficText === "Boyscouts_OPP") {
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
   }
   if (trafficText === "Credit-Score-SA") {
