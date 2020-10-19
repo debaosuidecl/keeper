@@ -243,9 +243,9 @@ app.get("/ping/:cid", async (req, res) => {
 
   if (trafficText === "SKIN") {
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-    redirectLink =
-      `https://anti-aging-potion.com/?popclick=${req.params.cid}&r=` +
-      encodeURIComponent(redirectLink);
+    // redirectLink =
+    //   `https://anti-aging-potion.com/?popclick=${req.params.cid}&r=` +
+    //   encodeURIComponent(redirectLink);
   }
   if (trafficText === "IMMUNITY") {
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
