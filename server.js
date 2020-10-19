@@ -88,7 +88,7 @@ app.get("/pingmeta/:cid", async (req, res) => {
       const rejectIP = await whoislookup(ip);
 
       if (rejectIP) {
-        return console.log("you are from google", ip, rejectIP);
+        console.log("you are from google", ip, rejectIP);
       } else {
         console.log(ip, "not google");
       }
