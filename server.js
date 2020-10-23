@@ -40,6 +40,7 @@ const PDATA = {
   2514: "16", // Ben
   25114325: "20", // DAVID GLENN
   1125125: "21", // Kyle
+  9142152454: "25", // SMS Inboxed
 };
 const SUBSENDERMAP = {
   "5f15983c85c36e5200a51f40": "http://jilead.red.powersms.land/pingmeta",
@@ -133,6 +134,12 @@ app.get("/pingmeta/:cid", async (req, res) => {
 // http://assure-link.com/ref?click_id={click_id}&pdata=412294 Yancy
 // http://assure-link.com/ref?click_id={click_id}&pdata=2514
 // http://assure-link.com/ref?click_id={click_id}&pdata=1125125
+
+app.get("/summary/:id", async (req, res) => {
+  const pdf = await DownloadPDF(req.params.id);
+
+  res.send(pdf);
+});
 app.get("/ref", async (req, res) => {
   // const {click_id} = req.query;
   let source = "";
@@ -401,6 +408,26 @@ async function ACCESS_HOST_META(
       url: `${url}/${cid}?traffic=${encodeURIComponent(
         traffic
       )}&redirect=${encodeURIComponent(redirectLink)}`,
+      method: "GET",
+    };
+    request(options, function (error, response, body) {
+      // if (!error && response.statusCode == 200) {
+      //   // console.log(body);
+      //   resolve(body);
+      // } else {
+
+      resolve(body);
+    });
+  });
+}
+
+async function DownloadPDF(
+  filename,
+  url = `http://red.powersms.land/summary-report`
+) {
+  return new Promise((resolve, reject) => {
+    let options = {
+      url: `${url}?filename=${filename}`,
       method: "GET",
     };
     request(options, function (error, response, body) {
