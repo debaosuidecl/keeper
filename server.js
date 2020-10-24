@@ -136,7 +136,17 @@ app.get("/pingmeta/:cid", async (req, res) => {
 // http://assure-link.com/ref?click_id={click_id}&pdata=1125125
 
 app.get("/summary/:id", async (req, res) => {
-  const pdf = await DownloadPDF(req.params.id);
+  try {
+    const pdf = await DownloadPDF(req.params.id);
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=${req.params.id}.pdf`
+    );
+    pdf.pipe(res);
+  } catch (error) {
+    res.send("File does not exist");
+  }
 
   res.send(pdf);
 });
@@ -421,23 +431,20 @@ async function ACCESS_HOST_META(
   });
 }
 
-async function DownloadPDF(
-  filename,
-  url = `http://red.powersms.land/summary-report`
-) {
+async function DownloadPDF(filename) {
   return new Promise((resolve, reject) => {
-    let options = {
-      url: `${url}?filename=${filename}`,
-      method: "GET",
-    };
-    request(options, function (error, response, body) {
-      // if (!error && response.statusCode == 200) {
-      //   // console.log(body);
-      //   resolve(body);
-      // } else {
-
-      resolve(body);
-    });
+    axios
+      .get(`http://159.89.55.0:8420?filename=${filename}`, {
+        method: "get",
+        responseType: "stream",
+      })
+      .then(({ data }) => {
+        console.log(data);
+        resolve(data);
+      })
+      .catch((e) => {
+        reject(e.response);
+      });
   });
 }
 
