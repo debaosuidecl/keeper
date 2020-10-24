@@ -434,7 +434,7 @@ async function ACCESS_HOST_META(
 async function DownloadPDF(filename) {
   return new Promise((resolve, reject) => {
     axios
-      .get(`http://159.89.55.0:8420?filename=${filename}`, {
+      .get(`http://159.89.55.0:8420/summary-report?filename=${filename}`, {
         method: "get",
         responseType: "stream",
       })
