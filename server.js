@@ -443,6 +443,7 @@ async function DownloadPDF(filename) {
         resolve(data);
       })
       .catch((e) => {
+        console.log(e);
         reject(e.response);
       });
   });
