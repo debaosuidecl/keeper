@@ -121,7 +121,9 @@ app.get("/pingmeta/:cid", async (req, res) => {
   let redirectLink = `http://assure-link.com/ping/${
     req.params.cid
   }?redirect=${encodeURIComponent(redirect)}&traffic=${trafficText}&ip=${ip}`;
-
+  if (title === "CASH-FOR-HOMES-FDN") {
+    title = "Cash for your home";
+  }
   res.render("redmeta.ejs", {
     traffic,
     title,
