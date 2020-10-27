@@ -245,6 +245,7 @@ app.get("/ping/:cid", async (req, res) => {
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
   }
   if (trafficText === "CASH-FOR-HOMES-FDN" && customer && customer.cid) {
+    title = "CASH FOR YOUR HOME";
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
   }
   if (trafficText === "IPHONE-7ROI" && customer && customer.cid) {
