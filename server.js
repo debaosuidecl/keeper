@@ -242,6 +242,8 @@ app.get("/ping/:cid", async (req, res) => {
   let { traffic, title, redirectLink, customer } = JSON.parse(redirectDetails);
   // console.log(JSON.parse(redirectDetails))
   if (trafficText === "CASH FOR HOMES" && customer && customer.cid) {
+    title = "CASH FOR YOUR HOME";
+
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
   }
   if (trafficText === "CASH-FOR-HOMES-FDN" && customer && customer.cid) {
