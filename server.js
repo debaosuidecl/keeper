@@ -100,12 +100,12 @@ app.get("/pingmeta/:cid", async (req, res) => {
   let redirectDetails = "";
   if (req.query.uid) {
     try {
-      redirectDetails = await ACCESS_HOST_META(
-        req.params.cid,
-        req.query.traffic,
-        req.query.redirect,
-        SUBSENDERMAP[req.query.uid]
-      );
+      // redirectDetails = await ACCESS_HOST_META(
+      //   req.params.cid,
+      //   req.query.traffic,
+      //   req.query.redirect,
+      //   SUBSENDERMAP[req.query.uid]
+      // );
     } catch (error) {
       console.log(error);
     }
@@ -113,14 +113,21 @@ app.get("/pingmeta/:cid", async (req, res) => {
     redirectDetails = await ACCESS_HOST_META(
       req.params.cid,
       req.query.traffic,
-      req.query.redirect
+      req.query.redirect,
+      "http://red.powersms.land/pingmeta"
+      // req.query.sub_id,
+      // req.query.source
     );
   }
   let { traffic, title, customer } = JSON.parse(redirectDetails);
 
   let redirectLink = `http://assure-link.com/ping/${
     req.params.cid
-  }?redirect=${encodeURIComponent(redirect)}&traffic=${trafficText}&ip=${ip}`;
+  }?redirect=${encodeURIComponent(
+    redirect
+  )}&traffic=${trafficText}&ip=${ip}&sub_id=${req.query.sub_id}&source=${
+    req.query.source
+  }`;
   if (title === "CASH-FOR-HOMES-FDN") {
     title = "Cash for your home";
   }
@@ -253,6 +260,10 @@ app.get("/ping/:cid", async (req, res) => {
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
   }
   if (trafficText === "PAYDAY" && customer && customer.cid) {
+    title = "PAYDAY";
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+  }
+  if (trafficText === "PAYDAY2" && customer && customer.cid) {
     title = "PAYDAY";
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
   }
@@ -427,7 +438,9 @@ async function ACCESS_HOST_META(
   cid,
   traffic,
   redirectLink,
-  url = `http://red.powersms.land/pingmeta`
+  url = `http://red.powersms.land/pingmeta`,
+  sub_id,
+  source
 ) {
   return new Promise((resolve, reject) => {
     let options = {
