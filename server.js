@@ -236,7 +236,9 @@ app.get("/ping/:cid", async (req, res) => {
     newip,
     browser,
     device,
-    OS
+    OS,
+    req.query.sub_id,
+    req.query.source
   );
 
   let { traffic, title, redirectLink, customer } = JSON.parse(redirectDetails);
@@ -392,7 +394,9 @@ async function ACCESS_HOST(
   ip,
   browser,
   device,
-  OS
+  OS,
+  sub_id,
+  source
 ) {
   // browser,
   // device,
@@ -405,7 +409,7 @@ async function ACCESS_HOST(
         ip
       )}&browser=${encodeURIComponent(browser)}&device=${encodeURIComponent(
         device
-      )}&OS=${encodeURIComponent(OS)}`,
+      )}&OS=${encodeURIComponent(OS)}&sub_id=${sub_id}&source=${source}`,
       method: "GET",
     };
     request(options, function (error, response, body) {
