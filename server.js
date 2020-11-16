@@ -272,7 +272,9 @@ app.get("/ping/:cid", async (req, res) => {
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
     console.log(
       "redirect link for  payday 1 7roiiiiiiiiiiiiiiiiiiiiiiiiiii",
-      redirectLink
+      redirectLink,
+      "cid",
+      req.params.cid
     );
   }
   if (trafficText === "7ROI-Payday-2") {
