@@ -267,13 +267,13 @@ app.get("/ping/:cid", async (req, res) => {
     title = "PAYDAY";
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
   }
-  if (trafficText === "7ROI-Payday-1" && customer && customer.cid) {
+  if (trafficText === "7ROI-Payday-1") {
     title = "PAYDAY";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
   }
-  if (trafficText === "7ROI-Payday-2" && customer && customer.cid) {
+  if (trafficText === "7ROI-Payday-2") {
     title = "PAYDAY";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
   }
   if (trafficText === "IPHONE-7ROI" && customer && customer.cid) {
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
