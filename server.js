@@ -131,6 +131,9 @@ app.get("/pingmeta/:cid", async (req, res) => {
   if (title === "CASH-FOR-HOMES-FDN") {
     title = "Cash for your home";
   }
+  if (title === "Unclaimed-Assets") {
+    title = "Unclaimed Money In The USA";
+  }
   res.render("redmeta.ejs", {
     traffic,
     title,
@@ -264,7 +267,7 @@ app.get("/ping/:cid", async (req, res) => {
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
   }
   if (trafficText === "Unclaimed-Assets" && customer && customer.cid) {
-    title = "Unclaimed-Assets";
+    title = "Unclaimed Money In The USA";
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
   }
   if (trafficText === "PAYDAY2" && customer && customer.cid) {
