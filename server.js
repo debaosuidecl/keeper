@@ -280,7 +280,7 @@ app.get("/ping/:cid", async (req, res) => {
     redirectLink = `${redirectLink}`.replace("{cilck_id}", `${req.params.cid}`);
 
     console.log(
-      "redirect link for  payday 1 7roiiiiiiiiiiiiiiiiiiiiiiiiiii",
+      "redirect link for  payday 1 7roiiiiiiiiiiiiiiiiiiiiiiiiiiii",
       redirectLink,
       "cid",
       req.params.cid
