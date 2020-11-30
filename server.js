@@ -234,6 +234,8 @@ app.get("/ping/:cid", async (req, res) => {
     browser = result.client.name || "";
     device = result.device.model || result.device.type || "";
     OS = result.os.name || "";
+
+    console.log(browser, device, OS);
   } catch (error) {
     console.log(error);
   }
