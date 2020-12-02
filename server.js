@@ -131,6 +131,9 @@ app.get("/pingmeta/:cid", async (req, res) => {
   if (title === "CASH-FOR-HOMES-FDN") {
     title = "Cash for your home";
   }
+  if (title === "KETO-WG") {
+    title = "Instant Movie-Star Weight-loss";
+  }
   if (title === "Unclaimed-Assets") {
     title = "Unclaimed Money In The USA";
   }
@@ -352,6 +355,14 @@ app.get("/ping/:cid", async (req, res) => {
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
     redirectLink =
       `https://procore-keto.com?popclick=${req.params.cid}&r=` +
+      encodeURIComponent(redirectLink);
+  }
+  if (trafficText === "KETO-WG") {
+    title = "Instant Movie-Star Weight-loss";
+
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
+    redirectLink =
+      `https://superketogenics.com?popclick=${req.params.cid}&r=` +
       encodeURIComponent(redirectLink);
   }
 
