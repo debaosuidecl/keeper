@@ -361,9 +361,9 @@ app.get("/ping/:cid", async (req, res) => {
     title = "Instant Movie-Star Weight-loss";
 
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-    redirectLink =
-      `https://superketogenics.com?popclick=${req.params.cid}&r=` +
-      encodeURIComponent(redirectLink);
+    // redirectLink =
+    //   `https://superketogenics.com?popclick=${req.params.cid}&r=` +
+    //   encodeURIComponent(redirectLink);
   }
 
   if (trafficText === "KETO-OS") {
