@@ -137,6 +137,9 @@ app.get("/pingmeta/:cid", async (req, res) => {
   if (title === "Unclaimed-Assets") {
     title = "Unclaimed Money In The USA";
   }
+  if (title === "TORT-LF") {
+    title = "YOUR COMPENSATION CLAIM";
+  }
   res.render("redmeta.ejs", {
     traffic,
     title,
@@ -269,6 +272,10 @@ app.get("/ping/:cid", async (req, res) => {
   }
   if (trafficText === "PAYDAY") {
     title = "PAYDAY";
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
+  }
+  if (trafficText === "TORT-LF") {
+    title = "YOUR COMPENSATION CLAIM";
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
   }
   if (trafficText === "Unclaimed-Assets" && customer && customer.cid) {
