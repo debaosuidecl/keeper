@@ -267,9 +267,9 @@ app.get("/ping/:cid", async (req, res) => {
     title = "CASH FOR YOUR HOME";
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
   }
-  if (trafficText === "PAYDAY" && customer && customer.cid) {
+  if (trafficText === "PAYDAY") {
     title = "PAYDAY";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
   }
   if (trafficText === "Unclaimed-Assets" && customer && customer.cid) {
     title = "Unclaimed Money In The USA";
