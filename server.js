@@ -1,3 +1,4 @@
+// @ts-nocheck
 const express = require("express");
 const path = require("path");
 var useragent = require("useragent");
@@ -131,6 +132,9 @@ app.get("/pingmeta/:cid", async (req, res) => {
   if (title === "CASH-FOR-HOMES-FDN") {
     title = "Cash for your home";
   }
+  if (title === "CBD-GUMMIES") {
+    title = "Get down with CBD Gummies!";
+  }
   if (title === "KETO-WG") {
     title = "Instant Movie-Star Weight-loss";
   }
@@ -261,6 +265,8 @@ app.get("/ping/:cid", async (req, res) => {
 
   let { traffic, title, redirectLink, customer } = JSON.parse(redirectDetails);
   // console.log(JSON.parse(redirectDetails))
+  redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+
   if (trafficText === "CASH FOR HOMES" && customer && customer.cid) {
     title = "CASH FOR YOUR HOME";
 
@@ -403,8 +409,8 @@ app.get("/ping/:cid", async (req, res) => {
   }
   if (trafficText === "CBD-GUMMIES") {
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-    redirectLink = "https://foxnews.blog?r=" + encodeURIComponent(redirectLink);
-    traffic = "cbdgummies.png";
+    // redirectLink = "https://foxnews.blog?r=" + encodeURIComponent(redirectLink);
+    // traffic = "cbdgummies.png";
   }
   if (trafficText === "VOD-SOI") {
     let phone = customer.phone || "";
