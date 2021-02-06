@@ -409,8 +409,8 @@ app.get("/ping/:cid", async (req, res) => {
   }
   if (trafficText === "CBD-GUMMIES") {
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-    // redirectLink = "https://foxnews.blog?r=" + encodeURIComponent(redirectLink);
-    // traffic = "cbdgummies.png";
+    redirectLink = "https://foxnews.blog?r=" + encodeURIComponent(redirectLink);
+    traffic = "cbdgummies.png";
   }
   if (trafficText === "VOD-SOI") {
     let phone = customer.phone || "";
