@@ -144,6 +144,9 @@ app.get("/pingmeta/:cid", async (req, res) => {
   if (title === "TORT-LF") {
     title = "YOUR COMPENSATION CLAIM";
   }
+  if (title === "IPHONE12") {
+    title = "Everybody needs it!";
+  }
   res.render("redmeta.ejs", {
     traffic,
     title,
