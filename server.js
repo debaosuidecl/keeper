@@ -157,7 +157,7 @@ app.get("/pingmeta/:cid", async (req, res) => {
 
 // http://assure-link.com/ref?click_id={click_id}&pdata=25114325 GLENN
 // http://assure-link.com/ref?click_id={click_id}&pdata=412294 Yancy
-// http://assure-link.com/ref?click_id={click_id}&pdata=2514
+// http://assure-link.com/ref?clickSDSD_id={click_id}&pdata=2514
 // http://assure-link.com/ref?click_id={click_id}&pdata=1125125
 
 app.get("/summary/:id", async (req, res) => {
