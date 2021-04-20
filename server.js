@@ -194,9 +194,9 @@ app.get("/pingmeta2/:cid", async (req, res) => {
       req.params.cid,
       req.query.traffic,
       req.query.redirect,
-      "http://red.powersms.land/pingmeta"
-      // req.query.sub_id,
-      // req.query.source
+      "http://red.powersms.land/pingmeta",
+      req.query.sub_id,
+      req.query.source
     );
   }
   let { traffic, title, customer } = JSON.parse(redirectDetails);
