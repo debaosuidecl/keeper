@@ -122,7 +122,7 @@ app.get("/pingmeta/:cid", async (req, res) => {
   }
   let { traffic, title, customer } = JSON.parse(redirectDetails);
 
-  let redirectLink = `http://assure-link.com/ping/${
+  let redirectLink = `http://domain-secured.com/ping/${
     req.params.cid
   }?redirect=${encodeURIComponent(
     redirect
