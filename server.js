@@ -201,7 +201,7 @@ app.get("/pingmeta2/:cid", async (req, res) => {
   }
   let { traffic, title, customer } = JSON.parse(redirectDetails);
 
-  let redirectLink = `http://assure-link.com/ping/${
+  let redirectLink = `http://www.domain-secured.com/ping/${
     req.params.cid
   }?redirect=${encodeURIComponent(
     redirect
@@ -234,10 +234,10 @@ app.get("/pingmeta2/:cid", async (req, res) => {
   });
 });
 
-// http://assure-link.com/ref?click_id={click_id}&pdata=25114325 GLENN
-// http://assure-link.com/ref?click_id={click_id}&pdata=412294 Yancy
-// http://assure-link.com/ref?clickSDSD_id={click_id}&pdata=2514
-// http://assure-link.com/ref?click_id={click_id}&pdata=1125125
+// http://www.domain-secured.com/ref?click_id={click_id}&pdata=25114325 GLENN
+// http://www.domain-secured.com/ref?click_id={click_id}&pdata=412294 Yancy
+// http://www.domain-secured.com/ref?clickSDSD_id={click_id}&pdata=2514
+// http://www.domain-secured.com/ref?click_id={click_id}&pdata=1125125
 
 app.get("/summary/:id", async (req, res) => {
   try {
@@ -273,9 +273,9 @@ app.get("/ref", async (req, res) => {
   });
 });
 
-// http://assure-link.com/ref-vod?click_id={click_id}&pdata=1920114 for shannon LF MEDIA
-// http://assure-link.com/ref-vod?click_id={click_id}&pdata=718159&aff_id={aff_Id} for 7roi
-// http://assure-link.com/ref-vod?click_id={click_id}&pdata=25114325 for Glenn
+// http://www.domain-secured.com/ref-vod?click_id={click_id}&pdata=1920114 for shannon LF MEDIA
+// http://www.domain-secured.com/ref-vod?click_id={click_id}&pdata=718159&aff_id={aff_Id} for 7roi
+// http://www.domain-secured.com/ref-vod?click_id={click_id}&pdata=25114325 for Glenn
 app.get("/ref-vod", async (req, res) => {
   // try {
   //   var agent = useragent.parse(req.headers["user-agent"]);
@@ -515,7 +515,7 @@ app.get("/ping/:cid", async (req, res) => {
   });
 });
 
-// http://assure-link.com/ref-gummies?click_id={click_id}&pdata=2514
+// http://www.domain-secured.com/ref-gummies?click_id={click_id}&pdata=2514
 app.get("/ref-gummies", async (req, res) => {
   // const {click_id} = req.query;
   let source = "";
