@@ -155,6 +155,85 @@ app.get("/pingmeta/:cid", async (req, res) => {
   });
 });
 
+app.get("/pingmeta2/:cid", async (req, res) => {
+  var ip =
+    req.headers["x-forwarded-for"] ||
+    req.connection.remoteAddress ||
+    req.socket.remoteAddress ||
+    (req.connection.socket ? req.connection.socket.remoteAddress : null);
+  let trafficText = req.query.traffic;
+  let redirect = req.query.redirect;
+
+  if (req.query.traffic === "SKIN-DISABLED") {
+    if (ip) {
+      const rejectIP = await whoislookup(ip);
+
+      if (rejectIP) {
+        console.log("you are from google", ip, rejectIP);
+      } else {
+        console.log(ip, "not google");
+      }
+    } else {
+      console.log(great, "not skin");
+    }
+  }
+  let redirectDetails = "";
+  if (req.query.uid) {
+    try {
+      // redirectDetails = await ACCESS_HOST_META(
+      //   req.params.cid,
+      //   req.query.traffic,
+      //   req.query.redirect,
+      //   SUBSENDERMAP[req.query.uid]
+      // );
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    redirectDetails = await ACCESS_HOST_META(
+      req.params.cid,
+      req.query.traffic,
+      req.query.redirect,
+      "http://red.powersms.land/pingmeta"
+      // req.query.sub_id,
+      // req.query.source
+    );
+  }
+  let { traffic, title, customer } = JSON.parse(redirectDetails);
+
+  let redirectLink = `http://assure-link.com/ping/${
+    req.params.cid
+  }?redirect=${encodeURIComponent(
+    redirect
+  )}&traffic=${trafficText}&ip=${ip}&sub_id=${req.query.sub_id}&source=${
+    req.query.source
+  }`;
+  if (title === "CASH-FOR-HOMES-FDN") {
+    title = "Cash for your home";
+  }
+  if (title === "CBD-GUMMIES") {
+    title = "Get down with CBD Gummies!";
+  }
+  if (title === "KETO-WG") {
+    title = "Instant Movie-Star Weight-loss";
+  }
+  if (title === "Unclaimed-Assets") {
+    title = "Unclaimed Money In The USA";
+  }
+  if (title === "TORT-LF") {
+    title = "YOUR COMPENSATION CLAIM";
+  }
+  if (title === "IPHONE12") {
+    title = "Everybody needs it!";
+  }
+  res.render("redmeta.ejs", {
+    traffic,
+    title,
+    redirectLink,
+    customer,
+  });
+});
+
 // http://assure-link.com/ref?click_id={click_id}&pdata=25114325 GLENN
 // http://assure-link.com/ref?click_id={click_id}&pdata=412294 Yancy
 // http://assure-link.com/ref?clickSDSD_id={click_id}&pdata=2514
