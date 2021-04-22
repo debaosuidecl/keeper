@@ -638,6 +638,26 @@ async function DownloadPDF(filename) {
   });
 }
 
+async function ACCESS_CONDITIONAL_REDIRECT(oid) {
+  // browser,
+  // device,
+  // OS
+  return new Promise((resolve, reject) => {
+    let options = {
+      url: `http://159.89.55.0:2989/getsuboffers-forcs?offerid=${oid}`,
+      method: "GET",
+    };
+    request(options, function (error, response, body) {
+      // if (!error && response.statusCode == 200) {
+      //   // console.log(body);
+      //   resolve(body);
+      // } else {
+
+      resolve(body);
+    });
+  });
+}
+
 async function LOGClickers(cid, traffic) {
   return new Promise((resolve, reject) => {
     let options = {
