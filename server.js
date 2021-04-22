@@ -199,6 +199,28 @@ app.get("/pingmeta2/:cid", async (req, res) => {
       req.query.source
     );
   }
+
+  try {
+    if (req.query.oid) {
+      console.log("fetching for new redirect");
+      const oldredirect = redirect;
+      redirect = await ACCESS_CONDITIONAL_REDIRECT(req.query.oid);
+
+      if (!redirect) {
+        console.log(
+          "since no redirect ",
+          redirect,
+          "we are going back to the old value"
+        );
+
+        redirect = oldredirect;
+      } else {
+        console.log(redirect, "redirect extracted!!");
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
   let { traffic, title, customer } = JSON.parse(redirectDetails);
 
   let redirectLink = `http://www.domain-secured.com/ping/${
