@@ -7,6 +7,7 @@ var whois = require("node-whois");
 const axios = require("axios");
 const detector = new DeviceDetector();
 const request = require("request");
+const HOMESERVER = "http://localhost:8080";
 const app = express();
 const bodyParser = require("body-parser");
 app.use(bodyParser.json({ limit: "900mb" }));
@@ -295,33 +296,74 @@ app.get("/ref", async (req, res) => {
   });
 });
 
-// http://www.domain-secured.com/ref-vod?click_id={click_id}&pdata=1920114 for shannon LF MEDIA
-// http://www.domain-secured.com/ref-vod?click_id={click_id}&pdata=718159&aff_id={aff_Id} for 7roi
-// http://www.domain-secured.com/ref-vod?click_id={click_id}&pdata=25114325 for Glenn
-app.get("/ref-vod", async (req, res) => {
-  // try {
-  //   var agent = useragent.parse(req.headers["user-agent"]);
-  //  console.log(agent);
-  //  res.send(agent.os.toString());
+app.get("/ping-revamp/:cid", async (req, res) => {
+  try {
+    let { cid } = req.params;
 
-  // } catch (error) {
-  //   console.log(error)
-  // }
-  let source = "";
-  const { click_id, pdata, aff_id } = req.query;
-  console.log(req.query);
-  if (PDATA.hasOwnProperty(pdata)) {
-    source = PDATA[`${pdata}`];
+    let { redirect, OS, device, browser, ip } = req.query;
+
+    try {
+      let cdata = await GETLEADDATA(cid, ip, browser, device, OS);
+
+      if (!cdata) {
+        console.log(cdata, "cdata", 309);
+        return res.sendStatus(404);
+      }
+
+      redirect = redirect
+        .replace("{campaignid}", cdata.campaignid)
+        .replace("{clickid}", cdata.leadid);
+
+      res.redirect(redirect);
+    } catch (error) {
+      console.log(error);
+      res.sendStatus(401);
+    }
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
   }
-  let redirect_traffic = `https://101traffic.com/l.php?trf=m&p=c:dvtupna21u56_iol_&d=5e7248c8e793f611df536f69&pid=${click_id}&data4=5656&source=${source}${
-    aff_id ? `&data1=${aff_id}` : `&data1`
-  }`;
+});
 
-  res.render("redirect-for.ejs", {
-    traffic: "vod.png",
-    title: "Free Movies For a Year!",
-    redirectLink: redirect_traffic,
-  });
+app.get("/ping-revamp-meta/:cid", async (rq, res) => {
+  try {
+    let { cid } = req.params;
+    let { redirect } = req.query;
+
+    let metaredirectlink = `http://www.domain-secured.com/ping-revamp/${cid}?redirect=${encodeURIComponent(
+      redirect
+    )}&OS=${OS}&device=${device}&browser=${browser}&ip=${newip}`;
+    let newip =
+      req.headers["x-forwarded-for"] ||
+      req.connection.remoteAddress ||
+      req.socket.remoteAddress ||
+      (req.connection.socket ? req.connection.socket.remoteAddress : null);
+
+    // let trafficText = req.query.traffic;
+    let browser = "";
+    let device = "";
+    let OS = "";
+    try {
+      let agent = useragent.parse(req.headers["user-agent"]);
+      // let device = agent.device.toJSON(); // returns an object
+      let result = detector.detect(agent);
+      browser = result.client.name || "";
+      device = result.device.model || result.device.type || "";
+      OS = result.os.name || "";
+
+      console.log(browser, device, OS);
+    } catch (error) {
+      console.log(error);
+    }
+
+    res.render("redmetarevamp.ejs", {
+      title: "",
+      redirect: metaredirectlink,
+    });
+  } catch (error) {
+    res.sendStatus(500);
+    console.log(error);
+  }
 });
 
 // https://101traffic.com/l.php?trf=m&p=c:1ighcaypohstx6b9x&d=5e850bd73c92e656601dd3a2&pid={click_id}
@@ -581,6 +623,26 @@ async function ACCESS_HOST(
       )}&browser=${encodeURIComponent(browser)}&device=${encodeURIComponent(
         device
       )}&OS=${encodeURIComponent(OS)}&sub_id=${sub_id}&source=${source}`,
+      method: "GET",
+    };
+    request(options, function (error, response, body) {
+      // if (!error && response.statusCode == 200) {
+      //   // console.log(body);
+      //   resolve(body);
+      // } else {
+
+      resolve(body);
+    });
+  });
+}
+async function GETLEADDATA(cid, ip, browser, device, OS) {
+  return new Promise((resolve, reject) => {
+    let options = {
+      url: `http://${HOMESERVER}/api/leadactivity/clickers/${cid}?ip=${encodeURIComponent(
+        ip
+      )}&browser=${encodeURIComponent(browser)}&device=${encodeURIComponent(
+        device
+      )}&OS=${encodeURIComponent(OS)}`,
       method: "GET",
     };
     request(options, function (error, response, body) {
