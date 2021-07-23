@@ -23,6 +23,8 @@ app.use(function (req, res, next) {
 let PORT = process.env.PORT || 3000;
 app.listen(PORT, function () {
   console.log(`listening to requests on port ${PORT}`);
+
+  console.log("please start recieving requests");
   // connectDB();
 });
 app.use("/images", express.static("images"));
