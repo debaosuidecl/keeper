@@ -254,8 +254,8 @@ app.get("/pingmeta2/:cid", async (req, res) => {
     title = "Everybody needs it!";
   }
   res.render("redmeta.ejs", {
-    traffic,
-    title,
+    traffic: title === "AUTO-INSURANCE" ? "" : traffic,
+    title: title === "AUTO-INSURANCE" ? "" : title,
     redirectLink,
     customer,
   });
