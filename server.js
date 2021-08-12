@@ -159,6 +159,7 @@ app.get("/pingmeta/:cid", async (req, res) => {
 });
 
 app.get("/pingmeta2/:cid", async (req, res) => {
+  console.log(req.query, 162);
   var ip =
     req.headers["x-forwarded-for"] ||
     req.connection.remoteAddress ||
@@ -181,6 +182,7 @@ app.get("/pingmeta2/:cid", async (req, res) => {
     }
   }
   let redirectDetails = "";
+
   if (req.query.uid) {
     try {
       // redirectDetails = await ACCESS_HOST_META(
@@ -226,7 +228,7 @@ app.get("/pingmeta2/:cid", async (req, res) => {
   }
   let { traffic, title, customer } = JSON.parse(redirectDetails);
 
-  let redirectLink = `http://www.domain-secured.com/ping/${
+  let redirectLink = `https://www.domain-secured.com/ping/${
     req.params.cid
   }?redirect=${encodeURIComponent(
     redirect
