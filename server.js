@@ -506,6 +506,9 @@ app.get("/ping/:cid", async (req, res) => {
   if (trafficText === "ED-OS") {
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
   }
+  if (trafficText === "AUTO-INSURANCE" || trafficText === "REFINANCE") {
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
+  }
   if (trafficText == "SKIN-OS") {
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
   }
