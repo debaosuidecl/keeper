@@ -8,6 +8,7 @@ const axios = require("axios");
 const detector = new DeviceDetector();
 const request = require("request");
 const HOMESERVER = "http://localhost:8080";
+const ipmap = require("./lists/iplist.json");
 const app = express();
 const bodyParser = require("body-parser");
 app.use(bodyParser.json({ limit: "900mb" }));
@@ -165,6 +166,19 @@ app.get("/pingmeta2/:cid", async (req, res) => {
     req.connection.remoteAddress ||
     req.socket.remoteAddress ||
     (req.connection.socket ? req.connection.socket.remoteAddress : null);
+
+  try {
+    if (ipmap.hasOwnProperty(ip)) {
+      console.log("you are not supposed to be accessing this route", ip);
+
+      return res.status(404).json({
+        message: "NOT ALLOWED",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
   let trafficText = req.query.traffic;
   let redirect = req.query.redirect;
 
