@@ -166,7 +166,7 @@ app.get("/pingmeta2/:cid", async (req, res) => {
     req.connection.remoteAddress ||
     req.socket.remoteAddress ||
     (req.connection.socket ? req.connection.socket.remoteAddress : null);
-
+  console.log(ip, "this is the ip");
   try {
     if (ipmap.hasOwnProperty(ip)) {
       console.log("you are not supposed to be accessing this route", ip);
