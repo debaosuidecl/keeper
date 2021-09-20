@@ -11,6 +11,7 @@ const HOMESERVER = "http://localhost:8080";
 const ipmap = require("./lists/iplist.json");
 const app = express();
 const bodyParser = require("body-parser");
+const findgender = require("./helperfunctions/findgender");
 app.use(bodyParser.json({ limit: "900mb" }));
 app.set("views", path.join(__dirname, "views"));
 app.use(bodyParser.urlencoded({ limit: "900mb", extended: true }));
@@ -477,6 +478,14 @@ app.get("/ping/:cid", async (req, res) => {
     title = "50K";
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
 
+    let gender = "m";
+    try {
+      // find gender
+
+      gender = await findgender(customer.first_name);
+    } catch (error) {
+      console.log(error);
+    }
     try {
       let kFirstName = customer.first_name || "";
       let kLastName = customer.last_name || "";
@@ -484,6 +493,7 @@ app.get("/ping/:cid", async (req, res) => {
       let kcity = customer.city || "";
       let kstate = customer.state || "";
       let kzip = customer.zip || "";
+      let gender = gender[0] || "m";
       let kemail = customer.email || "";
       let kphone = getusphoneformat(customer.phone) || "";
       redirectLink = `${redirectLink}&phone=${kphone}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}`;
