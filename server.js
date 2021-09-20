@@ -452,10 +452,7 @@ app.get("/ping/:cid", async (req, res) => {
     title = "XMAS CASH FAST";
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
   }
-  if (
-    (trafficText === "Unclaimed-Assets" && customer && customer.cid) ||
-    (trafficText === "50K" && customer && customer.cid)
-  ) {
+  if (trafficText === "Unclaimed-Assets" && customer && customer.cid) {
     title =
       trafficText === "Unclaimed-Assets"
         ? "Unclaimed Money In The USA"
@@ -474,6 +471,24 @@ app.get("/ping/:cid", async (req, res) => {
       redirectLink = `${redirectLink}&phone=${kphone}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}`;
     } catch (error) {
       console.log(error);
+    }
+  }
+  if (trafficText === "50K" && customer && customer.cid) {
+    title = "50K";
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+
+    try {
+      let kFirstName = customer.first_name || "";
+      let kLastName = customer.last_name || "";
+      let kaddress = customer.address || "";
+      let kcity = customer.city || "";
+      let kstate = customer.state || "";
+      let kzip = customer.zip || "";
+      let kemail = customer.email || "";
+      let kphone = getusphoneformat(customer.phone) || "";
+      redirectLink = `${redirectLink}&phone=${kphone}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}`;
+    } catch (error) {
+      console.log(error, 4209302930193019301390139);
     }
   }
   if (trafficText === "PAYDAY2" && customer && customer.cid) {
