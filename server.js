@@ -452,8 +452,14 @@ app.get("/ping/:cid", async (req, res) => {
     title = "XMAS CASH FAST";
     redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
   }
-  if (trafficText === "Unclaimed-Assets" && customer && customer.cid) {
-    title = "Unclaimed Money In The USA";
+  if (
+    (trafficText === "Unclaimed-Assets" && customer && customer.cid) ||
+    (trafficText === "50K" && customer && customer.cid)
+  ) {
+    title =
+      trafficText === "Unclaimed-Assets"
+        ? "Unclaimed Money In The USA"
+        : "SWEEPS";
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
 
     try {
@@ -467,7 +473,7 @@ app.get("/ping/:cid", async (req, res) => {
       let kphone = getusphoneformat(customer.phone) || "";
       redirectLink = `${redirectLink}&phone=${kphone}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}`;
     } catch (error) {
-      console.log(error, 470000000000000000000000000000000000000000000);
+      console.log(error);
     }
   }
   if (trafficText === "PAYDAY2" && customer && customer.cid) {
