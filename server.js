@@ -482,7 +482,7 @@ app.get("/ping/:cid", async (req, res) => {
     try {
       // find gender
 
-      gender = await findgender(customer.first_name);
+      gender = (await findgender(customer.first_name)) || "m";
     } catch (error) {
       console.log(error);
     }
