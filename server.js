@@ -544,6 +544,12 @@ app.get("/ping/:cid", async (req, res) => {
       `https://procore-keto.com?popclick=${req.params.cid}&r=` +
       encodeURIComponent(redirectLink);
   }
+  if (trafficText === "Wally-World") {
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
+    redirectLink =
+      `https://super-samp.com?popclick=${req.params.cid}&r=` +
+      encodeURIComponent(redirectLink);
+  }
   if (trafficText === "KETO-WG") {
     title = "Instant Movie-Star Weight-loss";
 
