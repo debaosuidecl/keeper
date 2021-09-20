@@ -455,6 +455,20 @@ app.get("/ping/:cid", async (req, res) => {
   if (trafficText === "Unclaimed-Assets" && customer && customer.cid) {
     title = "Unclaimed Money In The USA";
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+
+    try {
+      let kFirstName = customer.first_name || "";
+      let kLastName = customer.last_name || "";
+      let kaddress = customer.address || "";
+      let kcity = customer.city || "";
+      let kstate = customer.state || "";
+      let kzip = customer.zip || "";
+      let kemail = customer.email || "";
+      let kphone = getusphoneformat(customer.phone) || "";
+      redirectLink = `${redirectLink}&phone=${kphone}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}$address=${kaddress}`;
+    } catch (error) {
+      console.log(error, 470000000000000000000000000000000000000000000);
+    }
   }
   if (trafficText === "PAYDAY2" && customer && customer.cid) {
     title = "PAYDAY";
@@ -682,7 +696,21 @@ async function GETLEADDATA(cid, ip, browser, device, OS) {
     });
   });
 }
+function getusphoneformat(phone) {
+  let formattedphone = "";
+  for (let i = 0; i < phone.length; i++) {
+    const char = phone[i];
+    if (i === 0) {
+      continue;
+    } else if (i == 4 || i == 7) {
+      formattedphone += "-";
+    }
 
+    formattedphone += char;
+  }
+
+  return formattedphone;
+}
 async function ACCESS_HOST_META(
   cid,
   traffic,
