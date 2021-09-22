@@ -485,10 +485,8 @@ app.get("/ping/:cid", async (req, res) => {
     let gender = "M";
     try {
       // find gender
-
-      gender = await findgender(customer.first_name);
-
-      gender = gender.toUpperCase();
+      // gender = await findgender(customer.first_name);
+      // gender = gender.toUpperCase();
     } catch (error) {
       console.log(error);
     }
