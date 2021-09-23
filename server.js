@@ -482,7 +482,8 @@ app.get("/ping/:cid", async (req, res) => {
     // title = "50K";
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
 
-    title = trafficText === "CASHAPP_FLUENT" ? "$750 Receipt" : "Secure";
+    title =
+      trafficText === "CASHAPP_FLUENT" ? "SECURE REDIRECT" : "Secure Redirect";
 
     let gender = "M";
     try {
