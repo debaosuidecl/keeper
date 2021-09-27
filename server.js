@@ -474,6 +474,27 @@ app.get("/ping/:cid", async (req, res) => {
       console.log(error);
     }
   }
+  if (trafficText === "Find-Unclaimed-Assets" && customer && customer.cid) {
+    title =
+      trafficText === "Unclaimed-Assets"
+        ? "Unclaimed Money In The USA"
+        : "SWEEPS";
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+
+    try {
+      let kFirstName = customer.first_name || "";
+      let kLastName = customer.last_name || "";
+      let kaddress = customer.address || "";
+      let kcity = customer.city || "";
+      let kstate = customer.state || "";
+      let kzip = customer.zip || "";
+      let kemail = customer.email || "";
+      let kphone = getusphoneformat(customer.phone) || "";
+      redirectLink = `${redirectLink}&phone=${kphone}&fname=${kFirstName}&lname=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}`;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   if (
     trafficText.toLowerCase().indexOf("fluent") !== -1 &&
     customer &&
