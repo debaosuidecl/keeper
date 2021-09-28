@@ -495,6 +495,27 @@ app.get("/ping/:cid", async (req, res) => {
       console.log(error);
     }
   }
+  if (trafficText === "Unclaimed-Assets-HT" && customer && customer.cid) {
+    title =
+      trafficText === "Unclaimed-Assets"
+        ? "Unclaimed Money In The USA"
+        : "Secure Link";
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+
+    try {
+      let kFirstName = customer.first_name || "";
+      let kLastName = customer.last_name || "";
+      let kaddress = customer.address || "";
+      let kcity = customer.city || "";
+      let kstate = customer.state || "";
+      let kzip = customer.zip || "";
+      let kemail = customer.email || "";
+      let kphone = customer.phone || "";
+      redirectLink = `${redirectLink}&d4=${kphone}&d1=${kFirstName}&d2=${kLastName}&d3=${kemail}&d5=${kzip}`;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   if (
     trafficText.toLowerCase().indexOf("fluent") !== -1 &&
     customer &&
