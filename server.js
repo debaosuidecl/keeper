@@ -551,7 +551,6 @@ app.get("/ping/:cid", async (req, res) => {
     }
   }
 
-
   if (trafficText === "iPHONE-CPC-CN" && customer && customer.cid) {
     title = "iPHONE13";
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
@@ -602,6 +601,33 @@ app.get("/ping/:cid", async (req, res) => {
       let kemail = customer.email || "";
       let kphone = getusphoneformat(customer.phone) || "";
       redirectLink = `${redirectLink}&phone=${kphone}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}&gender=${kgender}`;
+    } catch (error) {
+      console.log(error, 4209302930193019301390139);
+    }
+  }
+  if (trafficText === "CASH-APP" && customer && customer.cid) {
+    title = "Confirm $750 Receipt";
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+
+    let gender = "m";
+    try {
+      // find gender
+      // gender = (await findgender(customer.first_name)) || "m";
+    } catch (error) {
+      console.log(error);
+    }
+    try {
+      let kFirstName = customer.first_name || "";
+      let kLastName = customer.last_name || "";
+      let kaddress = customer.address || "";
+      let kcity = customer.city || "";
+      let kstate = customer.state || "";
+      let kzip = customer.zip || "";
+      let kgender = gender[0] || "m";
+      let kemail = customer.email || "";
+      let kphone = getusphoneformat(customer.phone) || "";
+      // first={first}&last={last}&email={email}&address1={address1}&city={city}&state={state}&zip={zip}&phone={phone}
+      redirectLink = `${redirectLink}&phone=${kphone}&address1=${kaddress}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&gender=${kgender}`;
     } catch (error) {
       console.log(error, 4209302930193019301390139);
     }
