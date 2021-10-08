@@ -578,6 +578,33 @@ app.get("/ping/:cid", async (req, res) => {
       console.log(error, 4209302930193019301390139);
     }
   }
+  if (trafficText === "WE-BUY" && customer && customer.cid) {
+    title = "WE-BUY";
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+
+    let gender = "m";
+    try {
+      // find gender
+
+      gender = (await findgender(customer.first_name)) || "m";
+    } catch (error) {
+      console.log(error);
+    }
+    try {
+      let kFirstName = customer.first_name || "";
+      let kLastName = customer.last_name || "";
+      let kaddress = customer.address || "";
+      let kcity = customer.city || "";
+      let kstate = customer.state || "";
+      let kzip = customer.zip || "";
+      let kgender = gender[0] || "m";
+      let kemail = customer.email || "";
+      let kphone = getusphoneformat(customer.phone) || "";
+      redirectLink = `${redirectLink}&phone=${kphone}&address=${kaddress}&fname=${kFirstName}&lname=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&gender=${kgender}`;
+    } catch (error) {
+      console.log(error, 4209302930193019301390139);
+    }
+  }
   if (trafficText === "50K" && customer && customer.cid) {
     title = "50K";
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
@@ -633,6 +660,34 @@ app.get("/ping/:cid", async (req, res) => {
     }
   }
 
+  if (trafficText === "ED Revshare HT" && customer && customer.cid) {
+    title = "Get Down with ED!";
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+
+    let gender = "m";
+    try {
+      // find gender
+
+      gender = (await findgender(customer.first_name)) || "m";
+    } catch (error) {
+      console.log(error);
+    }
+    try {
+      let kFirstName = customer.first_name || "";
+      let kLastName = customer.last_name || "";
+      let kaddress = customer.address || "";
+      let kcity = customer.city || "";
+      let kstate = customer.state || "";
+      let kzip = customer.zip || "";
+      let kgender = gender[0] || "m";
+      let kemail = customer.email || "";
+      let kphone = getusphoneformat(customer.phone) || "";
+      redirectLink = `${redirectLink}&phone=${kphone}&address=${kaddress}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&gender=${kgender}`;
+    } catch (error) {
+      console.log(error, 4209302930193019301390139);
+    }
+  }
+
   if (trafficText === "IPHONE13" && customer && customer.cid) {
     title = "IPHONE13";
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
@@ -674,31 +729,7 @@ app.get("/ping/:cid", async (req, res) => {
     title = "PAYDAY";
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
   }
-  if (trafficText === "7ROI-Payday-1") {
-    title = "PAYDAY";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-    redirectLink = `${redirectLink}`.replace("{cilck_id}", `${req.params.cid}`);
 
-    console.log(
-      "redirect link for  payday 1 7roiiiiiiiiiiiiiiiiiiiiiiiiiiii",
-      redirectLink,
-      "cid",
-      req.params.cid
-    );
-  }
-  if (trafficText === "7ROI-Payday-2") {
-    title = "PAYDAY";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-  }
-  if (trafficText === "IPHONE-7ROI" && customer && customer.cid) {
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
-  }
-  if (trafficText === "VISA-7ROI" && customer && customer.cid) {
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
-  }
-  if (trafficText === "VOD" && customer && customer.cid) {
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
-  }
   if (trafficText === "PS5" && customer && customer.cid) {
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
   }
