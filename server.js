@@ -362,7 +362,7 @@ app.post("/save-response", async (req, res) => {
     });
 
   // take user to next page throught the meta click
-  let redirectLinkToGo = `https://claim-your-assets.com/ping/${cid}?redirect=${encodeURIComponent(
+  let redirectLinkToGo = `https://www.domain-secured.com/ping/${cid}?redirect=${encodeURIComponent(
     redirectLink
   )}&traffic=${traffic}&ip=${ip}&sub_id=${sub_id}&source=${source}`;
   res.render("redmeta.ejs", {
