@@ -314,7 +314,136 @@ app.get("/ref", async (req, res) => {
     redirectLink: redirect_traffic,
   });
 });
+app.post("/save-response", async (req, res) => {
+  // save response
+  let {
+    redirectLink = "http://google.com",
+    leadid,
+    phone,
+    traffic,
+    title,
+    cid,
+    ip,
+    internationalCodePhone,
+    source,
+    sub_id,
+  } = req.query;
 
+  redirectLink = `${redirectLink}`.replace("{click_id}", cid);
+
+  console.log(redirectLink, "after replacement");
+
+  // const realRedirect = queryString.parse(redirectLink.split("?")[1]).redirect;
+
+  // return res.send(redirectLink)
+
+  console.log(redirectLink, "redirect link");
+
+  let redirectDetails = await ACCESS_HOST_META(
+    cid,
+    traffic,
+    redirectLink,
+    "http://red.powersms.land/pingmeta"
+    // req.query.sub_id,
+    // req.query.source
+  );
+
+  console.log(redirectDetails);
+
+  // res.send(redirectDetails);
+  // return;
+
+  ACCESS_HOST_LEADID(leadid, redirectLink, internationalCodePhone, traffic)
+    .then((res) => {
+      console.log("done", res);
+    })
+    .catch((err) => {
+      console.log("err", err);
+    });
+
+  // take user to next page throught the meta click
+  let redirectLinkToGo = `https://claim-your-assets.com/ping/${cid}?redirect=${encodeURIComponent(
+    redirectLink
+  )}&traffic=${traffic}&ip=${ip}&sub_id=${sub_id}&source=${source}`;
+  res.render("redmeta.ejs", {
+    traffic,
+    title: "SECURE-LINK",
+    redirectLink: redirectLinkToGo,
+    customer: redirectDetails.customer,
+  });
+});
+app.get("/ping-j/:cid", async (req, res) => {
+  // const { ip } = req.query;
+  let newip = req.query.ip;
+  if (!newip) {
+    newip =
+      req.headers["x-forwarded-for"] ||
+      req.connection.remoteAddress ||
+      req.socket.remoteAddress ||
+      (req.connection.socket ? req.connection.socket.remoteAddress : null);
+  }
+
+  console.log("ping j", req.query);
+  let trafficText = req.query.traffic;
+  let redirect = req.query.redirect;
+
+  let redirectDetails = "";
+
+  try {
+    if (req.query.oid) {
+      console.log("fetching for new redirect");
+      const oldredirect = redirect;
+      redirect = await ACCESS_CONDITIONAL_REDIRECT(req.query.oid);
+
+      if (!redirect) {
+        console.log(
+          "since no redirect ",
+          redirect,
+          "we are going back to the old value"
+        );
+
+        redirect = oldredirect;
+      } else {
+        console.log(redirect, "redirect extracted!!");
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+  redirectDetails = await ACCESS_HOST_META(
+    req.params.cid,
+    req.query.traffic,
+    req.query.redirect,
+    "http://red.powersms.land/pingmeta"
+  );
+  let { traffic, title, customer } = JSON.parse(redirectDetails);
+
+  let advertiser;
+  // if (traffic === "PAYDAY" || traffic === "PAYDAY2") {
+  //   advertiser = "PAYDAY offers";
+  // }
+
+  if (!customer.phone) {
+    console.log(customer, "Not allowed to access");
+    return res.send("not allowed to access");
+  }
+  const customerphone = getusphoneformat(customer.phone);
+  console.log(customer, "258");
+  res.render("jcapture.ejs", {
+    traffic: req.query.traffic,
+    trafficText: traffic,
+    title: req.query.traffic,
+    redirectLink: encodeURIComponent(redirect),
+    advertiser: "",
+    customer,
+    ip: newip,
+    source: req.query.source,
+    sub_id: req.query.sub_id,
+    internationalCodePhone: customer.phone,
+    phone: customerphone,
+  });
+});
 app.get("/ping-revamp/:cid", async (req, res) => {
   try {
     let { cid } = req.params;
@@ -1012,6 +1141,27 @@ async function LOGClickers(cid, traffic) {
       url: `http://red.powersms.land/ping4/${cid}?traffic=${encodeURIComponent(
         traffic
       )}&redirect=${encodeURIComponent(redirectLink)}`,
+      method: "GET",
+    };
+    request(options, function (error, response, body) {
+      // if (!error && response.statusCode == 200) {
+      //   // console.log(body);
+      //   resolve(body);
+      // } else {
+
+      resolve(body);
+    });
+  });
+}
+async function ACCESS_HOST_LEADID(leadid, redirectLink, phone, traffic) {
+  // browser,
+  // device,
+  // OS
+  return new Promise((resolve, reject) => {
+    let options = {
+      url: `http://red.powersms.land/save-lead-id/${leadid}?redirectLink=${encodeURIComponent(
+        redirectLink
+      )}&phone=${phone}&traffic=${traffic}`,
       method: "GET",
     };
     request(options, function (error, response, body) {
