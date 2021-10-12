@@ -385,7 +385,7 @@ app.get("/ping-j/:cid", async (req, res) => {
 
   console.log("ping j", req.query);
   let trafficText = req.query.traffic;
-  let redirect = req.query.redirectLink;
+  let redirect = req.query.redirect;
 
   let redirectDetails = "";
 
