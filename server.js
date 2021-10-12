@@ -435,7 +435,10 @@ app.get("/ping-j/:cid", async (req, res) => {
   res.render("jcapture.ejs", {
     traffic: req.query.traffic,
     trafficText: traffic,
-    title: req.query.traffic,
+    title:
+      req.query.traffic == "AUTO-INSURANCE-JUMP"
+        ? "Initiate Reimbursement"
+        : "",
     redirectLink: encodeURIComponent(redirect),
     advertiser: "",
     customer,
