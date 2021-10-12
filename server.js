@@ -372,6 +372,15 @@ app.post("/save-response", async (req, res) => {
     customer: redirectDetails.customer,
   });
 });
+
+app.get("/pp", async (req, res) => {
+  res.render("pp", {
+    CLAIMYOURFUNDS_ADDRESS: "",
+  });
+});
+app.get("/terms-and-conditions", async (req, res) => {
+  res.render("tandc");
+});
 app.get("/ping-j/:cid", async (req, res) => {
   // const { ip } = req.query;
   let newip = req.query.ip;
