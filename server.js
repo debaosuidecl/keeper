@@ -385,7 +385,7 @@ app.get("/ping-j/:cid", async (req, res) => {
 
   console.log("ping j", req.query);
   let trafficText = req.query.traffic;
-  let redirect = req.query.redirect;
+  let redirect = req.query.redirectLink;
 
   let redirectDetails = "";
 
@@ -428,6 +428,8 @@ app.get("/ping-j/:cid", async (req, res) => {
     console.log(customer, "Not allowed to access");
     return res.send("not allowed to access");
   }
+
+  console.log("this is the redirect", redirect);
   const customerphone = getusphoneformat(customer.phone);
   console.log(customer, "258");
   res.render("jcapture.ejs", {
