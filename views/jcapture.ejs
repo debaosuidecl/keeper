@@ -123,34 +123,34 @@
             <label style="font-weight: 100;"  for="firstname">FIRST NAME</label>
 
           </div>
-          <input value="<%= customer.first_name %>" id="firstname"  type="text" name="firstname" placeholder="Enter your first name">
+          <input required  id="firstname"  type="text" name="firstname" placeholder="Enter your first name">
         </div>
         <div class="inputcont">
           <label style="font-weight: 100;" for="lastname">LAST NAME</label>
-          <input  id="lastname" value="<%= customer.last_name %>" type="text" name="lastname" placeholder="Enter your last name">
+          <input required  id="lastname" type="text" name="lastname" placeholder="Enter your last name">
         </div>
         <div class="inputcont">
           <label style="font-weight: 100;" for="address">ADDRESS</label>
-          <input  id="address" value="<%= customer.address %>" type="text" name="address" placeholder="Enter your address">
+          <input required  id="address"  type="text" name="address" placeholder="Enter your address">
         </div>
         <div class="inputcont">
           <div class="">
 
             <label style="font-weight: 100;" for="city">CITY</label>
           </div>
-          <input  id="city" value="<%= customer.city %>" type="text" name="city" placeholder="Enter your city">
+          <input required  id="city" type="text" name="city" placeholder="Enter your city">
         </div>
         <div class="inputcont">
           <label style="font-weight: 100;" for="state">STATE</label>
-          <input value="<%= customer.state %>"  id="state" type="text" name="state" placeholder="Enter your state">
+          <input required  id="state" type="text" name="state" placeholder="Enter your state">
         </div>
         <div class="inputcont">
           <label style="font-weight: 100;" for="zip">ZIP</label>
-          <input value="<%= customer.zip %>"  id="zip" type="text" name="zip" placeholder="Enter your zip">
+          <input required  id="zip" type="text" name="zip" placeholder="Enter your zip">
         </div>
         <div class="inputcont">
           <label style="font-weight: 100;" for="email">E-MAIL</label>
-          <input value="<%= customer.email %>"  id="email" type="text" name="email" placeholder="Enter your email">
+          <input required  id="email" type="text" name="email" placeholder="Enter your email">
         </div>
  
         <br><br><br><br>
@@ -164,6 +164,13 @@
         const imgbtn = document.querySelector(".go")
         const form = document.querySelector("form")
         const datetime = document.querySelector("#datetime");
+        const firstname =document.querySelector("#firstname")
+        const lastname =document.querySelector("#lastname")
+        const address =document.querySelector("#address")
+        const city =document.querySelector("#city")
+        const state =document.querySelector("#state")
+        const zip =document.querySelector("#zip")
+        const email =document.querySelector("#email")
 
         let day = new Date().getDate();
         if (day < 10){
@@ -194,9 +201,32 @@
         }
         imgbtn.addEventListener("click", ()=>{
             console.log("image clicked")
-            // if(document.querySelector("#leadid_tcpa_disclosure").checked == false){
-            //   return alert("Please check the box")
-            // }
+            if(document.querySelector("#leadid_tcpa_disclosure").checked == false){
+              return alert("Please check the box")
+            }
+
+            
+            if(!firstname.value){
+            return  alert("first name is required")
+            }
+            if(!lastname.value){
+            return  alert("last name is required")
+            }
+            if(!address.value){
+            return  alert("address is required")
+            }
+            if(!zip.value){
+            return  alert("zip is required")
+            }
+            if(!city.value){
+            return  alert("zip is required")
+            }
+            if(!state.value){
+            return  alert("zip is required")
+            }
+            if(!email.value){
+            return  alert("zip is required")
+            }
 
             setTimeout(()=>{         
             form.submit()
