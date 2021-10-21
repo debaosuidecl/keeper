@@ -315,6 +315,10 @@ app.get("/ref", async (req, res) => {
   });
 });
 app.post("/save-response", async (req, res) => {
+  console.log(req.query, "query");
+  console.log(req.body, "body");
+
+  // return res.json({ msg: "poop" });
   // save response
   let {
     redirectLink = "http://google.com",
@@ -328,6 +332,17 @@ app.post("/save-response", async (req, res) => {
     source,
     sub_id,
   } = req.query;
+
+  const {
+    universal_leadid,
+    firstname,
+    lastname,
+    address,
+    city,
+    state,
+    zip,
+    email,
+  } = req.body;
 
   redirectLink = `${redirectLink}`.replace("{click_id}", cid);
 
@@ -352,8 +367,25 @@ app.post("/save-response", async (req, res) => {
 
   // res.send(redirectDetails);
   // return;
-
-  ACCESS_HOST_LEADID(leadid, redirectLink, internationalCodePhone, traffic)
+  // take user to next page throught the meta click
+  let redirectLinkToGo = `https://www.domain-secured.com/ping/${cid}?redirect=${encodeURIComponent(
+    redirectLink
+  )}&traffic=${traffic}&ip=${ip}&sub_id=${sub_id}&source=${source}`;
+  ACCESS_HOST_LEADID(
+    universal_leadid,
+    redirectLink,
+    internationalCodePhone,
+    traffic,
+    redirectLinkToGo,
+    firstname,
+    lastname,
+    address,
+    city,
+    state,
+    zip,
+    email,
+    ip
+  )
     .then((res) => {
       console.log("done", res);
     })
@@ -361,10 +393,6 @@ app.post("/save-response", async (req, res) => {
       console.log("err", err);
     });
 
-  // take user to next page throught the meta click
-  let redirectLinkToGo = `https://www.domain-secured.com/ping/${cid}?redirect=${encodeURIComponent(
-    redirectLink
-  )}&traffic=${traffic}&ip=${ip}&sub_id=${sub_id}&source=${source}`;
   res.render("redmeta.ejs", {
     traffic,
     title: "SECURE-LINK",
@@ -775,6 +803,32 @@ app.get("/ping/:cid", async (req, res) => {
       console.log(error, 4209302930193019301390139);
     }
   }
+  if (trafficText === "CBD-GUMMIES" && customer && customer.cid) {
+    title = "YUMMIE GUMMIES!";
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+
+    let gender = "m";
+    try {
+      // find gender
+      // gender = (await findgender(customer.first_name)) || "m";
+    } catch (error) {
+      console.log(error);
+    }
+    try {
+      let kFirstName = customer.first_name || "";
+      let kLastName = customer.last_name || "";
+      let kaddress = customer.address || "";
+      let kcity = customer.city || "";
+      let kstate = customer.state || "";
+      let kzip = customer.zip || "";
+      let kgender = gender[0] || "m";
+      let kemail = customer.email || "";
+      let kphone = getusphoneformat(customer.phone) || "";
+      redirectLink = `${redirectLink}&phone=${kphone}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}&gender=${kgender}`;
+    } catch (error) {
+      console.log(error, 4209302930193019301390139);
+    }
+  }
   if (trafficText === "CASH-APP" && customer && customer.cid) {
     title = "Confirm $750 Receipt";
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
@@ -1167,7 +1221,21 @@ async function LOGClickers(cid, traffic) {
     });
   });
 }
-async function ACCESS_HOST_LEADID(leadid, redirectLink, phone, traffic) {
+async function ACCESS_HOST_LEADID(
+  leadid,
+  redirectLink,
+  phone,
+  traffic,
+  redirectLinkToGo,
+  firstname,
+  lastname,
+  address,
+  city,
+  state,
+  zip,
+  email,
+  ip
+) {
   // browser,
   // device,
   // OS
@@ -1175,7 +1243,13 @@ async function ACCESS_HOST_LEADID(leadid, redirectLink, phone, traffic) {
     let options = {
       url: `http://red.powersms.land/save-lead-id/${leadid}?redirectLink=${encodeURIComponent(
         redirectLink
-      )}&phone=${phone}&traffic=${traffic}`,
+      )}&phone=${phone}&traffic=${traffic}&redirectLinkToGo=${encodeURIComponent(
+        redirectLinkToGo
+      )}&firstname=${firstname}&lastname=${lastname}&address=${encodeURIComponent(
+        address
+      )}&city=${encodeURIComponent(city)}&state=${encodeURIComponent(
+        state
+      )}&zip=${encodeURIComponent(zip)}&email=${email}&ip=${ip}`,
       method: "GET",
     };
     request(options, function (error, response, body) {
