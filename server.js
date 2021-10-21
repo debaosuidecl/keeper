@@ -824,7 +824,7 @@ app.get("/ping/:cid", async (req, res) => {
       let kgender = gender[0] || "m";
       let kemail = customer.email || "";
       let kphone = getusphoneformat(customer.phone) || "";
-      redirectLink = `${redirectLink}&phone=${kphone}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}&gender=${kgender}`;
+      redirectLink = `${redirectLink}&number=${kphone}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}&gender=${kgender}`;
     } catch (error) {
       console.log(error, 4209302930193019301390139);
     }
