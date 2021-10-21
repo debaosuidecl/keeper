@@ -1022,11 +1022,11 @@ app.get("/ping/:cid", async (req, res) => {
       "https://foxnews.press?r=" + encodeURIComponent(redirectLink);
     traffic = "keto.jpeg";
   }
-  if (trafficText === "CBD-GUMMIES") {
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-    redirectLink = "https://foxnews.blog?r=" + encodeURIComponent(redirectLink);
-    traffic = "cbdgummies.png";
-  }
+  // if (trafficText === "CBD-GUMMIES") {
+  //   redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
+  //   redirectLink = "https://foxnews.blog?r=" + encodeURIComponent(redirectLink);
+  //   traffic = "cbdgummies.png";
+  // }
   if (trafficText === "VOD-SOI") {
     let phone = customer.phone || "";
     let phonecode = phone.substring(1, 4);
