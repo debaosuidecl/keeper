@@ -77,8 +77,9 @@ app.get("/ip-test", async (req, res) => {
   let agent = useragent.parse(req.headers["user-agent"]);
   // let device = agent.device.toJSON(); // returns an object
   const result = detector.detect(agent);
+  console.log(result);
 
-  res.json({ ip });
+  res.json({ ip, result });
 });
 
 app.get("/pingmeta/:cid", async (req, res) => {
