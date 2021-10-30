@@ -6,6 +6,7 @@ const DeviceDetector = require("node-device-detector");
 var whois = require("node-whois");
 const axios = require("axios");
 const detector = new DeviceDetector();
+var devicer = require("express-device");
 const request = require("request");
 const HOMESERVER = "http://localhost:8080";
 const ipmap = require("./lists/iplist.json");
@@ -13,6 +14,8 @@ const app = express();
 const bodyParser = require("body-parser");
 const findgender = require("./helperfunctions/findgender");
 app.use(bodyParser.json({ limit: "900mb" }));
+app.use(devicer.capture());
+
 app.set("views", path.join(__dirname, "views"));
 app.use(bodyParser.urlencoded({ limit: "900mb", extended: true }));
 app.use(function (req, res, next) {
@@ -79,7 +82,13 @@ app.get("/ip-test", async (req, res) => {
   const result = detector.detect(agent);
   console.log(result);
 
-  res.json({ ip, result });
+  let mydevice = "";
+  try {
+    mydevice = req.device.type.toUpperCase();
+  } catch (error) {
+    console.log(error);
+  }
+  res.json({ ip, result, mydevice });
 });
 
 app.get("/pingmeta/:cid", async (req, res) => {
