@@ -84,7 +84,7 @@ app.get("/ip-test", async (req, res) => {
 
   let mydevice = "";
   try {
-    mydevice = req.device.type.toUpperCase();
+    mydevice = req.device;
   } catch (error) {
     console.log(error);
   }
