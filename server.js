@@ -831,6 +831,34 @@ app.get("/ping/:cid", async (req, res) => {
       console.log(error, 4209302930193019301390139);
     }
   }
+
+  if (trafficText === "GAS_CARD_HT" && customer && customer.cid) {
+    // title = "50K";
+    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+
+    let gender = "m";
+    try {
+      // find gender
+
+      gender = (await findgender(customer.first_name)) || "m";
+    } catch (error) {
+      console.log(error);
+    }
+    try {
+      let kFirstName = customer.first_name || "";
+      let kLastName = customer.last_name || "";
+      let kaddress = customer.address || "";
+      let kcity = customer.city || "";
+      let kstate = customer.state || "";
+      let kzip = customer.zip || "";
+      let kgender = gender[0] || "m";
+      let kemail = customer.email || "";
+      let kphone = getusphoneformat(customer.phone) || "";
+      redirectLink = `${redirectLink}&d4=${kphone}&d1=${kFirstName}&d2=${kLastName}&d3=${kemail}&d5=${kzip}`;
+    } catch (error) {
+      console.log(error, 4209302930193019301390139);
+    }
+  }
   if (trafficText === "CBD-GUMMIES" && customer && customer.cid) {
     title = "YUMMY GUMMIES!";
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
