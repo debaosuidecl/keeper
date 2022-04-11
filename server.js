@@ -1108,25 +1108,45 @@ app.get("/ping/:cid", async (req, res) => {
 });
 
 // http://www.domain-secured.com/ref-gummies?click_id={click_id}&pdata=2514
-app.get("/ref-gummies", async (req, res) => {
+app.get("/ref-click-through-track", async (req, res) => {
   // const {click_id} = req.query;
   let source = "";
-  const { click_id, pdata } = req.query;
-  // console.log(req.query)
-  console.log(req.query);
-  if (PDATA.hasOwnProperty(pdata)) {
-    source = PDATA[`${pdata}`];
-  }
-  // let redirect_traffic = `http://918md-2.com/?a=4679&c=51301&s2=${source}&s5=${click_id}`
-  let redirect_traffic = `http://www.track4cr.com/click.track?CID=426105&AFID=434208&AffiliateReferenceID=${click_id}&SID=${source}&subid1=aff`;
-  // if(traffic=="CFH"){
+  const { click_id, sub_id, dataowner, traffic } = req.query;
 
-  res.render("redirect-for.ejs", {
-    traffic: "cbdgummies.png",
-    title: "Get down with CBD Gummies!",
-    redirectLink: redirect_traffic,
-  });
+  try {
+    await ACCESS_HOST_CLICK_THROUGH(click_id, sub_id, dataowner, traffic);
+    return res.send({
+      msg: "all good",
+    });
+  } catch (error) {
+    return res.status(500).send({
+      error: true,
+      message: "not good",
+    });
+  }
 });
+
+async function ACCESS_HOST_CLICK_THROUGH(click_id, sub_id, dataowner, traffic) {
+  // browser,
+  // device,
+  // OS
+  return new Promise((resolve, reject) => {
+    let options = {
+      url: `http://red.powersms.land/save-click-through/${click_id}?traffic=${encodeURIComponent(
+        traffic
+      )}&sub_id=${sub_id}&dataowner=${dataowner}`,
+      method: "GET",
+    };
+    request(options, function (error, response, body) {
+      // if (!error && response.statusCode == 200) {
+      //   // console.log(body);
+      //   resolve(body);
+      // } else {
+
+      resolve(body);
+    });
+  });
+}
 
 async function ACCESS_HOST(
   cid,
