@@ -1110,6 +1110,7 @@ app.get("/ping/:cid", async (req, res) => {
 // http://www.domain-secured.com/ref-gummies?click_id={click_id}&pdata=2514
 app.get("/ref-click-through-track", async (req, res) => {
   // const {click_id} = req.query;
+  console.log("query", req.query);
   let source = "";
   const { click_id, sub_id, dataowner, traffic } = req.query;
 
