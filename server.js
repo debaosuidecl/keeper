@@ -571,19 +571,19 @@ app.get("/ping-revamp-meta/:cid", async (rq, res) => {
 // &d8={dobday}&d9={dobyear}&d10={phonecode}&d11={phoneprefix}&d12={phonesuffix}
 // &d13={address1}&d14={address2}&d15={city}&d16={state}&d17={zippost}
 app.get("/ping/:cid", async (req, res) => {
-  let newip = req.query.ip;
-  if (!newip) {
-    newip =
-      req.headers["x-forwarded-for"] ||
-      req.connection.remoteAddress ||
-      req.socket.remoteAddress ||
-      (req.connection.socket ? req.connection.socket.remoteAddress : null);
-  }
-  let trafficText = req.query.traffic;
-  let browser = "";
-  let device = "";
-  let OS = "";
   try {
+    let newip = req.query.ip;
+    if (!newip) {
+      newip =
+        req.headers["x-forwarded-for"] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        (req.connection.socket ? req.connection.socket.remoteAddress : null);
+    }
+    let trafficText = req.query.traffic;
+    let browser = "";
+    let device = "";
+    let OS = "";
     let agent = useragent.parse(req.headers["user-agent"]);
     // let device = agent.device.toJSON(); // returns an object
     let result = detector.detect(agent);
@@ -594,517 +594,582 @@ app.get("/ping/:cid", async (req, res) => {
     console.log(browser, device, OS);
   } catch (error) {
     console.log(error);
+    return res.status(400).json({
+      message: "bad request",
+    });
   }
-  // res.json({  result });
-  // console.log(req.query);
-  let redirectDetails = await ACCESS_HOST(
-    req.params.cid,
-    req.query.traffic,
-    req.query.redirect,
-    newip,
-    browser,
-    device,
-    OS,
-    req.query.sub_id,
-    req.query.source
-  );
 
-  let { traffic, title, redirectLink, customer } = JSON.parse(redirectDetails);
-  // console.log(JSON.parse(redirectDetails))
-  redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+  try {
+    // res.json({  result });
+    // console.log(req.query);
+    let redirectDetails = await ACCESS_HOST(
+      req.params.cid,
+      req.query.traffic,
+      req.query.redirect,
+      newip,
+      browser,
+      device,
+      OS,
+      req.query.sub_id,
+      req.query.source
+    );
 
-  if (trafficText === "CASH FOR HOMES" && customer && customer.cid) {
-    title = "CASH FOR YOUR HOME";
-
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
-  }
-  if (trafficText === "CASH-FOR-HOMES-FDN" && customer && customer.cid) {
-    title = "CASH FOR YOUR HOME";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
-  }
-  if (trafficText === "PAYDAY") {
-    title = "PAYDAY";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-  }
-  if (trafficText === "TORT-LF") {
-    title = "YOUR COMPENSATION CLAIM";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-  }
-  if (trafficText === "XMAS-LEND") {
-    title = "XMAS CASH FAST";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-  }
-  if (trafficText === "Unclaimed-Assets" && customer && customer.cid) {
-    title =
-      trafficText === "Unclaimed-Assets"
-        ? "Unclaimed Money In The USA"
-        : "SWEEPS";
+    let { traffic, title, redirectLink, customer } =
+      JSON.parse(redirectDetails);
+    // console.log(JSON.parse(redirectDetails))
     redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
 
-    try {
-      let kFirstName = customer.first_name || "";
-      let kLastName = customer.last_name || "";
-      let kaddress = customer.address || "";
-      let kcity = customer.city || "";
-      let kstate = customer.state || "";
-      let kzip = customer.zip || "";
-      let kemail = customer.email || "";
-      let kphone = getusphoneformat(customer.phone) || "";
-      redirectLink = `${redirectLink}&phone=${kphone}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}`;
-    } catch (error) {
-      console.log(error);
+    if (trafficText === "CASH FOR HOMES" && customer && customer.cid) {
+      title = "CASH FOR YOUR HOME";
+
+      redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
     }
-  }
-  if (trafficText === "IPHONE13-MOKUM" && customer && customer.cid) {
-    title = trafficText === "IPHONE13-MOKUM" ? "IPHONE13" : "SWEEPS";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
-
-    try {
-      let kFirstName = customer.first_name || "";
-      let kLastName = customer.last_name || "";
-      let kaddress = customer.address || "";
-      let kcity = customer.city || "";
-      let kstate = customer.state || "";
-      let kzip = customer.zip || "";
-      let kemail = customer.email || "";
-      let kphone = getusphoneformat(customer.phone) || "";
-      redirectLink = `${redirectLink}&phone=${kphone}&first_name=${kFirstName}&last_name=${kLastName}&firstname=${kFirstName}&lastname=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}`;
-    } catch (error) {
-      console.log(error);
+    if (trafficText === "CASH-FOR-HOMES-FDN" && customer && customer.cid) {
+      title = "CASH FOR YOUR HOME";
+      redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
     }
-  }
-  if (trafficText === "Find-Unclaimed-Assets" && customer && customer.cid) {
-    title =
-      trafficText === "Unclaimed-Assets"
-        ? "Unclaimed Money In The USA"
-        : "SWEEPS";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
-
-    try {
-      let kFirstName = customer.first_name || "";
-      let kLastName = customer.last_name || "";
-      let kaddress = customer.address || "";
-      let kcity = customer.city || "";
-      let kstate = customer.state || "";
-      let kzip = customer.zip || "";
-      let kemail = customer.email || "";
-      let kphone = getusphoneformat(customer.phone) || "";
-      redirectLink = `${redirectLink}&phone=${kphone}&fname=${kFirstName}&lname=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}`;
-    } catch (error) {
-      console.log(error);
+    if (trafficText === "PAYDAY") {
+      title = "PAYDAY";
+      redirectLink = `${redirectLink}`.replace(
+        "{click_id}",
+        `${req.params.cid}`
+      );
     }
-  }
-  if (trafficText === "Unclaimed-Assets-HT" && customer && customer.cid) {
-    title =
-      trafficText === "Unclaimed-Assets"
-        ? "Unclaimed Money In The USA"
-        : "Secure Link";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
-
-    try {
-      let kFirstName = customer.first_name || "";
-      let kLastName = customer.last_name || "";
-      let kaddress = customer.address || "";
-      let kcity = customer.city || "";
-      let kstate = customer.state || "";
-      let kzip = customer.zip || "";
-      let kemail = customer.email || "";
-      let kphone = customer.phone || "";
-      redirectLink = `${redirectLink}&d4=${kphone}&d1=${kFirstName}&d2=${kLastName}&d3=${kemail}&d5=${kzip}`;
-    } catch (error) {
-      console.log(error);
+    if (trafficText === "TORT-LF") {
+      title = "YOUR COMPENSATION CLAIM";
+      redirectLink = `${redirectLink}`.replace(
+        "{click_id}",
+        `${req.params.cid}`
+      );
     }
-  }
-  if (
-    trafficText.toLowerCase().indexOf("fluent") !== -1 &&
-    customer &&
-    customer.cid
-  ) {
-    // title = "50K";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
-
-    title =
-      trafficText === "CASHAPP_FLUENT" ? "SECURE REDIRECT" : "Secure Redirect";
-
-    let gender = "M";
-    try {
-      // find gender
-      // gender = await findgender(customer.first_name);
-      // gender = gender.toUpperCase();
-    } catch (error) {
-      console.log(error);
+    if (trafficText === "XMAS-LEND") {
+      title = "XMAS CASH FAST";
+      redirectLink = `${redirectLink}`.replace(
+        "{click_id}",
+        `${req.params.cid}`
+      );
     }
-    try {
-      let kFirstName = customer.first_name || "";
-      let kLastName = customer.last_name || "";
-      let kaddress = customer.address || "";
-      let kcity = customer.city || "";
-      let kstate = customer.state || "";
-      let kzip = customer.zip || "";
-      let kgender = gender[0] || "m";
-      let kemail = customer.email || "";
-      let kphone = getusphoneformat(customer.phone) || "";
-      redirectLink = `${redirectLink}&telephone=${kphone}&firstname=${kFirstName}&lastname=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address1=${kaddress}&gender=${kgender}`;
-    } catch (error) {
-      console.log(error, 4209302930193019301390139);
-    }
-  }
+    if (trafficText === "Unclaimed-Assets" && customer && customer.cid) {
+      title =
+        trafficText === "Unclaimed-Assets"
+          ? "Unclaimed Money In The USA"
+          : "SWEEPS";
+      redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
 
-  if (trafficText === "iPHONE-CPC-CN" && customer && customer.cid) {
-    title = "iPHONE13";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
-
-    let gender = "m";
-    try {
-      // find gender
-
-      gender = (await findgender(customer.first_name)) || "m";
-    } catch (error) {
-      console.log(error);
-    }
-    try {
-      let kFirstName = customer.first_name || "";
-      let kLastName = customer.last_name || "";
-      let kaddress = customer.address || "";
-      let kcity = customer.city || "";
-      let kstate = customer.state || "";
-      let kzip = customer.zip || "";
-      let kgender = gender[0] || "m";
-      let kemail = customer.email || "";
-      let kphone = getusphoneformat(customer.phone) || "";
-      redirectLink = `${redirectLink}&phone=${kphone}&address=${kaddress}&fname=${kFirstName}&lname=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&gender=${kgender}`;
-    } catch (error) {
-      console.log(error, 4209302930193019301390139);
-    }
-  }
-  if (trafficText === "WE-BUY" && customer && customer.cid) {
-    title = "WE-BUY";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
-
-    let gender = "m";
-    try {
-      // find gender
-
-      gender = (await findgender(customer.first_name)) || "m";
-    } catch (error) {
-      console.log(error);
-    }
-    try {
-      let kFirstName = customer.first_name || "";
-      let kLastName = customer.last_name || "";
-      let kaddress = customer.address || "";
-      let kcity = customer.city || "";
-      let kstate = customer.state || "";
-      let kzip = customer.zip || "";
-      let kgender = gender[0] || "m";
-      let kemail = customer.email || "";
-      let kphone = getusphoneformat(customer.phone) || "";
-      redirectLink = `${redirectLink}&phone=${kphone}&address=${kaddress}&fname=${kFirstName}&lname=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&gender=${kgender}`;
-    } catch (error) {
-      console.log(error, 4209302930193019301390139);
-    }
-  }
-  if (trafficText === "50K" && customer && customer.cid) {
-    title = "50K";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
-
-    let gender = "m";
-    try {
-      // find gender
-
-      gender = (await findgender(customer.first_name)) || "m";
-    } catch (error) {
-      console.log(error);
-    }
-    try {
-      let kFirstName = customer.first_name || "";
-      let kLastName = customer.last_name || "";
-      let kaddress = customer.address || "";
-      let kcity = customer.city || "";
-      let kstate = customer.state || "";
-      let kzip = customer.zip || "";
-      let kgender = gender[0] || "m";
-      let kemail = customer.email || "";
-      let kphone = getusphoneformat(customer.phone) || "";
-      redirectLink = `${redirectLink}&phone=${kphone}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}&gender=${kgender}`;
-    } catch (error) {
-      console.log(error, 4209302930193019301390139);
-    }
-  }
-
-  if (trafficText === "GAS_CARD_HT" && customer && customer.cid) {
-    // title = "50K";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
-
-    let gender = "m";
-    try {
-      // find gender
-
-      gender = (await findgender(customer.first_name)) || "m";
-    } catch (error) {
-      console.log(error);
-    }
-    try {
-      let kFirstName = customer.first_name || "";
-      let kLastName = customer.last_name || "";
-      let kaddress = customer.address || "";
-      let kcity = customer.city || "";
-      let kstate = customer.state || "";
-      let kzip = customer.zip || "";
-      let kgender = gender[0] || "m";
-      let kemail = customer.email || "";
-      let kphone = getusphoneformat(customer.phone) || "";
-      redirectLink = `${redirectLink}&d4=${kphone}&d1=${kFirstName}&d2=${kLastName}&d3=${kemail}&d5=${kzip}`;
-    } catch (error) {
-      console.log(error, 4209302930193019301390139);
-    }
-  }
-  if (trafficText === "CBD-GUMMIES" && customer && customer.cid) {
-    title = "YUMMY GUMMIES!";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
-
-    let gender = "m";
-    try {
-      // find gender
-      // gender = (await findgender(customer.first_name)) || "m";
-    } catch (error) {
-      console.log(error);
-    }
-    try {
-      let kFirstName = customer.first_name || "";
-      let kLastName = customer.last_name || "";
-      let kaddress = customer.address || "";
-      let kcity = customer.city || "";
-      let kstate = customer.state || "";
-      let kzip = customer.zip || "";
-      if (kzip.length < 5) {
-        kzip = `0${kzip}`;
+      try {
+        let kFirstName = customer.first_name || "";
+        let kLastName = customer.last_name || "";
+        let kaddress = customer.address || "";
+        let kcity = customer.city || "";
+        let kstate = customer.state || "";
+        let kzip = customer.zip || "";
+        let kemail = customer.email || "";
+        let kphone = getusphoneformat(customer.phone) || "";
+        redirectLink = `${redirectLink}&phone=${kphone}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}`;
+      } catch (error) {
+        console.log(error);
       }
-      let kgender = gender[0] || "m";
-      let kemail = customer.email || "";
-      let kphone = getusphoneformat(customer.phone) || "";
-      redirectLink = `${redirectLink}&phone=${kphone}&fname=${kFirstName}&lname=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}&gender=${kgender}`;
-    } catch (error) {
-      console.log(error, 4209302930193019301390139);
     }
-  }
-  if (trafficText === "CASH-APP" && customer && customer.cid) {
-    title = "Confirm $750 Receipt";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+    if (trafficText === "IPHONE13-MOKUM" && customer && customer.cid) {
+      title = trafficText === "IPHONE13-MOKUM" ? "IPHONE13" : "SWEEPS";
+      redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
 
-    let gender = "m";
-    try {
-      // find gender
-      // gender = (await findgender(customer.first_name)) || "m";
-    } catch (error) {
-      console.log(error);
+      try {
+        let kFirstName = customer.first_name || "";
+        let kLastName = customer.last_name || "";
+        let kaddress = customer.address || "";
+        let kcity = customer.city || "";
+        let kstate = customer.state || "";
+        let kzip = customer.zip || "";
+        let kemail = customer.email || "";
+        let kphone = getusphoneformat(customer.phone) || "";
+        redirectLink = `${redirectLink}&phone=${kphone}&first_name=${kFirstName}&last_name=${kLastName}&firstname=${kFirstName}&lastname=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}`;
+      } catch (error) {
+        console.log(error);
+      }
     }
-    try {
-      let kFirstName = customer.first_name || "";
-      let kLastName = customer.last_name || "";
-      let kaddress = customer.address || "";
-      let kcity = customer.city || "";
-      let kstate = customer.state || "";
-      let kzip = customer.zip || "";
-      let kgender = gender[0] || "m";
-      let kemail = customer.email || "";
-      let kphone = getusphoneformat(customer.phone) || "";
-      // first={first}&last={last}&email={email}&address1={address1}&city={city}&state={state}&zip={zip}&phone={phone}
-      redirectLink = `${redirectLink}&phone=${kphone}&address1=${kaddress}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&gender=${kgender}`;
-    } catch (error) {
-      console.log(error, 4209302930193019301390139);
+    if (trafficText === "Find-Unclaimed-Assets" && customer && customer.cid) {
+      title =
+        trafficText === "Unclaimed-Assets"
+          ? "Unclaimed Money In The USA"
+          : "SWEEPS";
+      redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+
+      try {
+        let kFirstName = customer.first_name || "";
+        let kLastName = customer.last_name || "";
+        let kaddress = customer.address || "";
+        let kcity = customer.city || "";
+        let kstate = customer.state || "";
+        let kzip = customer.zip || "";
+        let kemail = customer.email || "";
+        let kphone = getusphoneformat(customer.phone) || "";
+        redirectLink = `${redirectLink}&phone=${kphone}&fname=${kFirstName}&lname=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}`;
+      } catch (error) {
+        console.log(error);
+      }
     }
-  }
+    if (trafficText === "Unclaimed-Assets-HT" && customer && customer.cid) {
+      title =
+        trafficText === "Unclaimed-Assets"
+          ? "Unclaimed Money In The USA"
+          : "Secure Link";
+      redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
 
-  if (trafficText === "ED Revshare HT" && customer && customer.cid) {
-    title = "Get Down with ED!";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
-
-    let gender = "m";
-    try {
-      // find gender
-
-      gender = (await findgender(customer.first_name)) || "m";
-    } catch (error) {
-      console.log(error);
+      try {
+        let kFirstName = customer.first_name || "";
+        let kLastName = customer.last_name || "";
+        let kaddress = customer.address || "";
+        let kcity = customer.city || "";
+        let kstate = customer.state || "";
+        let kzip = customer.zip || "";
+        let kemail = customer.email || "";
+        let kphone = customer.phone || "";
+        redirectLink = `${redirectLink}&d4=${kphone}&d1=${kFirstName}&d2=${kLastName}&d3=${kemail}&d5=${kzip}`;
+      } catch (error) {
+        console.log(error);
+      }
     }
-    try {
-      let kFirstName = customer.first_name || "";
-      let kLastName = customer.last_name || "";
-      let kaddress = customer.address || "";
-      let kcity = customer.city || "";
-      let kstate = customer.state || "";
-      let kzip = customer.zip || "";
-      let kgender = gender[0] || "m";
-      let kemail = customer.email || "";
-      let kphone = getusphoneformat(customer.phone) || "";
-      redirectLink = `${redirectLink}&phone=${kphone}&address=${kaddress}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&gender=${kgender}`;
-    } catch (error) {
-      console.log(error, 4209302930193019301390139);
+    if (
+      trafficText.toLowerCase().indexOf("fluent") !== -1 &&
+      customer &&
+      customer.cid
+    ) {
+      // title = "50K";
+      redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+
+      title =
+        trafficText === "CASHAPP_FLUENT"
+          ? "SECURE REDIRECT"
+          : "Secure Redirect";
+
+      let gender = "M";
+      try {
+        // find gender
+        // gender = await findgender(customer.first_name);
+        // gender = gender.toUpperCase();
+      } catch (error) {
+        console.log(error);
+      }
+      try {
+        let kFirstName = customer.first_name || "";
+        let kLastName = customer.last_name || "";
+        let kaddress = customer.address || "";
+        let kcity = customer.city || "";
+        let kstate = customer.state || "";
+        let kzip = customer.zip || "";
+        let kgender = gender[0] || "m";
+        let kemail = customer.email || "";
+        let kphone = getusphoneformat(customer.phone) || "";
+        redirectLink = `${redirectLink}&telephone=${kphone}&firstname=${kFirstName}&lastname=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address1=${kaddress}&gender=${kgender}`;
+      } catch (error) {
+        console.log(error, 4209302930193019301390139);
+      }
     }
-  }
 
-  if (trafficText === "IPHONE13" && customer && customer.cid) {
-    title = "IPHONE13";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+    if (trafficText === "iPHONE-CPC-CN" && customer && customer.cid) {
+      title = "iPHONE13";
+      redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
 
-    let gender = "m";
-    try {
-      // find gender
+      let gender = "m";
+      try {
+        // find gender
 
-      gender = (await findgender(customer.first_name)) || "m";
-    } catch (error) {
-      console.log(error);
+        gender = (await findgender(customer.first_name)) || "m";
+      } catch (error) {
+        console.log(error);
+      }
+      try {
+        let kFirstName = customer.first_name || "";
+        let kLastName = customer.last_name || "";
+        let kaddress = customer.address || "";
+        let kcity = customer.city || "";
+        let kstate = customer.state || "";
+        let kzip = customer.zip || "";
+        let kgender = gender[0] || "m";
+        let kemail = customer.email || "";
+        let kphone = getusphoneformat(customer.phone) || "";
+        redirectLink = `${redirectLink}&phone=${kphone}&address=${kaddress}&fname=${kFirstName}&lname=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&gender=${kgender}`;
+      } catch (error) {
+        console.log(error, 4209302930193019301390139);
+      }
     }
-    try {
-      let kFirstName = customer.first_name || "";
-      let kLastName = customer.last_name || "";
-      let kaddress = customer.address || "";
-      let kcity = customer.city || "";
-      let kstate = customer.state || "";
-      let kzip = customer.zip || "";
-      let kgender = gender[0] || "m";
-      let kemail = customer.email || "";
-      let kphone = getusphoneformat(customer.phone) || "";
+    if (trafficText === "WE-BUY" && customer && customer.cid) {
+      title = "WE-BUY";
+      redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
 
-      redirectLink = `${redirectLink}&phone=${kphone}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}&gender=${kgender}`;
+      let gender = "m";
+      try {
+        // find gender
 
-      redirectLink = `https://the-gloryofwinning.com?popclick=${
-        req.params.cid
-      }&r=${encodeURIComponent(
-        redirectLink
-      )}&phone=${kphone}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${encodeURIComponent(
-        kaddress
-      )}&gender=${kgender}`;
-      // redirectLink = `${redirectLink}`;
-    } catch (error) {
-      console.log(error, 09080078009);
+        gender = (await findgender(customer.first_name)) || "m";
+      } catch (error) {
+        console.log(error);
+      }
+      try {
+        let kFirstName = customer.first_name || "";
+        let kLastName = customer.last_name || "";
+        let kaddress = customer.address || "";
+        let kcity = customer.city || "";
+        let kstate = customer.state || "";
+        let kzip = customer.zip || "";
+        let kgender = gender[0] || "m";
+        let kemail = customer.email || "";
+        let kphone = getusphoneformat(customer.phone) || "";
+        redirectLink = `${redirectLink}&phone=${kphone}&address=${kaddress}&fname=${kFirstName}&lname=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&gender=${kgender}`;
+      } catch (error) {
+        console.log(error, 4209302930193019301390139);
+      }
     }
-  }
-  if (trafficText === "PAYDAY2" && customer && customer.cid) {
-    title = "PAYDAY";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
-  }
+    if (trafficText === "50K" && customer && customer.cid) {
+      title = "50K";
+      redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
 
-  if (trafficText === "PS5" && customer && customer.cid) {
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
-  }
-  if (
-    (trafficText === "KETO" && customer && customer.cid) ||
-    (trafficText === "CBD" && customer && customer.cid)
-  ) {
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
-  }
+      let gender = "m";
+      try {
+        // find gender
 
-  if (trafficText === "SKIN") {
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-    // redirectLink =
-    //   `https://anti-aging-potion.com/?popclick=${req.params.cid}&r=` +
-    //   encodeURIComponent(redirectLink);
-  }
-  if (trafficText === "IMMUNITY") {
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-  }
-  if (
-    trafficText === "Boyscouts_HT" ||
-    trafficText === "Boyscouts_OPP" ||
-    trafficText === "STAY_HOME_OPP"
-  ) {
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-  }
-  if (trafficText === "Credit-Score-SA") {
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-  }
-  if (trafficText === "PM-Score-A") {
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-  }
-  if (trafficText === "ED-OS") {
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-  }
-  if (trafficText === "AUTO-INSURANCE" || trafficText === "REFINANCE") {
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-  }
-  if (trafficText == "SKIN-OS") {
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-  }
-  if (trafficText === "IPHONE-712") {
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-    redirectLink =
-      `https://myphoneispretty.com?popclick=${req.params.cid}&r=` +
-      encodeURIComponent(redirectLink);
-  }
-  if (trafficText === "7ROI-Skin-B") {
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-    redirectLink =
-      `https://centerfoldskin.com/?popclick=${req.params.cid}&r=` +
-      encodeURIComponent(redirectLink);
-  }
-  if (trafficText === "KETOMATIC") {
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-    redirectLink =
-      `https://procore-keto.com?popclick=${req.params.cid}&r=` +
-      encodeURIComponent(redirectLink);
-  }
-  if (trafficText === "Wally-World") {
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-    redirectLink =
-      `https://super-samp.com?popclick=${req.params.cid}&r=` +
-      encodeURIComponent(redirectLink);
-  }
-  if (trafficText === "KETO-WG") {
-    title = "Instant Movie-Star Weight-loss";
+        gender = (await findgender(customer.first_name)) || "m";
+      } catch (error) {
+        console.log(error);
+      }
+      try {
+        let kFirstName = customer.first_name || "";
+        let kLastName = customer.last_name || "";
+        let kaddress = customer.address || "";
+        let kcity = customer.city || "";
+        let kstate = customer.state || "";
+        let kzip = customer.zip || "";
+        let kgender = gender[0] || "m";
+        let kemail = customer.email || "";
+        let kphone = getusphoneformat(customer.phone) || "";
+        redirectLink = `${redirectLink}&phone=${kphone}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}&gender=${kgender}`;
+      } catch (error) {
+        console.log(error, 4209302930193019301390139);
+      }
+    }
 
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-    // redirectLink =
-    //   `https://superketogenics.com?popclick=${req.params.cid}&r=` +
-    //   encodeURIComponent(redirectLink);
-  }
+    if (trafficText === "GAS_CARD_HT" && customer && customer.cid) {
+      // title = "50K";
+      redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
 
-  if (trafficText === "KETO-OS") {
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-    try {
-      let kFirstName = customer.first_name || "";
-      let kLastName = customer.last_name || "";
-      let kaddress = customer.address || "";
-      let kcity = customer.city || "";
-      let kstate = customer.state || "";
-      let kzip = customer.zip || "";
-      let kemail = customer.email || "";
-      let kphone = customer.phone || "";
+      let gender = "m";
+      try {
+        // find gender
+
+        gender = (await findgender(customer.first_name)) || "m";
+      } catch (error) {
+        console.log(error);
+      }
+      try {
+        let kFirstName = customer.first_name || "";
+        let kLastName = customer.last_name || "";
+        let kaddress = customer.address || "";
+        let kcity = customer.city || "";
+        let kstate = customer.state || "";
+        let kzip = customer.zip || "";
+        let kgender = gender[0] || "m";
+        let kemail = customer.email || "";
+        let kphone = getusphoneformat(customer.phone) || "";
+        redirectLink = `${redirectLink}&d4=${kphone}&d1=${kFirstName}&d2=${kLastName}&d3=${kemail}&d5=${kzip}`;
+      } catch (error) {
+        console.log(error, 4209302930193019301390139);
+      }
+    }
+    if (trafficText === "CBD-GUMMIES" && customer && customer.cid) {
+      title = "YUMMY GUMMIES!";
+      redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+
+      let gender = "m";
+      try {
+        // find gender
+        // gender = (await findgender(customer.first_name)) || "m";
+      } catch (error) {
+        console.log(error);
+      }
+      try {
+        let kFirstName = customer.first_name || "";
+        let kLastName = customer.last_name || "";
+        let kaddress = customer.address || "";
+        let kcity = customer.city || "";
+        let kstate = customer.state || "";
+        let kzip = customer.zip || "";
+        if (kzip.length < 5) {
+          kzip = `0${kzip}`;
+        }
+        let kgender = gender[0] || "m";
+        let kemail = customer.email || "";
+        let kphone = getusphoneformat(customer.phone) || "";
+        redirectLink = `${redirectLink}&phone=${kphone}&fname=${kFirstName}&lname=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}&gender=${kgender}`;
+      } catch (error) {
+        console.log(error, 4209302930193019301390139);
+      }
+    }
+    if (trafficText === "CASH-APP" && customer && customer.cid) {
+      title = "Confirm $750 Receipt";
+      redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+
+      let gender = "m";
+      try {
+        // find gender
+        // gender = (await findgender(customer.first_name)) || "m";
+      } catch (error) {
+        console.log(error);
+      }
+      try {
+        let kFirstName = customer.first_name || "";
+        let kLastName = customer.last_name || "";
+        let kaddress = customer.address || "";
+        let kcity = customer.city || "";
+        let kstate = customer.state || "";
+        let kzip = customer.zip || "";
+        let kgender = gender[0] || "m";
+        let kemail = customer.email || "";
+        let kphone = getusphoneformat(customer.phone) || "";
+        // first={first}&last={last}&email={email}&address1={address1}&city={city}&state={state}&zip={zip}&phone={phone}
+        redirectLink = `${redirectLink}&phone=${kphone}&address1=${kaddress}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&gender=${kgender}`;
+      } catch (error) {
+        console.log(error, 4209302930193019301390139);
+      }
+    }
+
+    if (trafficText === "ED Revshare HT" && customer && customer.cid) {
+      title = "Get Down with ED!";
+      redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+
+      let gender = "m";
+      try {
+        // find gender
+
+        gender = (await findgender(customer.first_name)) || "m";
+      } catch (error) {
+        console.log(error);
+      }
+      try {
+        let kFirstName = customer.first_name || "";
+        let kLastName = customer.last_name || "";
+        let kaddress = customer.address || "";
+        let kcity = customer.city || "";
+        let kstate = customer.state || "";
+        let kzip = customer.zip || "";
+        let kgender = gender[0] || "m";
+        let kemail = customer.email || "";
+        let kphone = getusphoneformat(customer.phone) || "";
+        redirectLink = `${redirectLink}&phone=${kphone}&address=${kaddress}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&gender=${kgender}`;
+      } catch (error) {
+        console.log(error, 4209302930193019301390139);
+      }
+    }
+
+    if (trafficText === "IPHONE13" && customer && customer.cid) {
+      title = "IPHONE13";
+      redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+
+      let gender = "m";
+      try {
+        // find gender
+
+        gender = (await findgender(customer.first_name)) || "m";
+      } catch (error) {
+        console.log(error);
+      }
+      try {
+        let kFirstName = customer.first_name || "";
+        let kLastName = customer.last_name || "";
+        let kaddress = customer.address || "";
+        let kcity = customer.city || "";
+        let kstate = customer.state || "";
+        let kzip = customer.zip || "";
+        let kgender = gender[0] || "m";
+        let kemail = customer.email || "";
+        let kphone = getusphoneformat(customer.phone) || "";
+
+        redirectLink = `${redirectLink}&phone=${kphone}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}&gender=${kgender}`;
+
+        redirectLink = `https://the-gloryofwinning.com?popclick=${
+          req.params.cid
+        }&r=${encodeURIComponent(
+          redirectLink
+        )}&phone=${kphone}&first=${kFirstName}&last=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${encodeURIComponent(
+          kaddress
+        )}&gender=${kgender}`;
+        // redirectLink = `${redirectLink}`;
+      } catch (error) {
+        console.log(error, 09080078009);
+      }
+    }
+    if (trafficText === "PAYDAY2" && customer && customer.cid) {
+      title = "PAYDAY";
+      redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+    }
+
+    if (trafficText === "PS5" && customer && customer.cid) {
+      redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+    }
+    if (
+      (trafficText === "KETO" && customer && customer.cid) ||
+      (trafficText === "CBD" && customer && customer.cid)
+    ) {
+      redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+    }
+
+    if (trafficText === "SKIN") {
+      redirectLink = `${redirectLink}`.replace(
+        "{click_id}",
+        `${req.params.cid}`
+      );
+      // redirectLink =
+      //   `https://anti-aging-potion.com/?popclick=${req.params.cid}&r=` +
+      //   encodeURIComponent(redirectLink);
+    }
+    if (trafficText === "IMMUNITY") {
+      redirectLink = `${redirectLink}`.replace(
+        "{click_id}",
+        `${req.params.cid}`
+      );
+    }
+    if (
+      trafficText === "Boyscouts_HT" ||
+      trafficText === "Boyscouts_OPP" ||
+      trafficText === "STAY_HOME_OPP"
+    ) {
+      redirectLink = `${redirectLink}`.replace(
+        "{click_id}",
+        `${req.params.cid}`
+      );
+    }
+    if (trafficText === "Credit-Score-SA") {
+      redirectLink = `${redirectLink}`.replace(
+        "{click_id}",
+        `${req.params.cid}`
+      );
+    }
+    if (trafficText === "PM-Score-A") {
+      redirectLink = `${redirectLink}`.replace(
+        "{click_id}",
+        `${req.params.cid}`
+      );
+    }
+    if (trafficText === "ED-OS") {
+      redirectLink = `${redirectLink}`.replace(
+        "{click_id}",
+        `${req.params.cid}`
+      );
+    }
+    if (trafficText === "AUTO-INSURANCE" || trafficText === "REFINANCE") {
+      redirectLink = `${redirectLink}`.replace(
+        "{click_id}",
+        `${req.params.cid}`
+      );
+    }
+    if (trafficText == "SKIN-OS") {
+      redirectLink = `${redirectLink}`.replace(
+        "{click_id}",
+        `${req.params.cid}`
+      );
+    }
+    if (trafficText === "IPHONE-712") {
+      redirectLink = `${redirectLink}`.replace(
+        "{click_id}",
+        `${req.params.cid}`
+      );
       redirectLink =
-        redirectLink +
-        `&shipping_firstname=${kFirstName}&shipping_lastname=${kLastName}&shipping_city=${kcity}&shipping_state=${kstate}&shipping_zipcode=${kzip}&shipping_email=${kemail}&shipping_phone=${kphone}&shipping_country=US&shipping_address=${kaddress}`;
-    } catch (error) {
-      console.log(error);
+        `https://myphoneispretty.com?popclick=${req.params.cid}&r=` +
+        encodeURIComponent(redirectLink);
     }
-    redirectLink =
-      "https://foxnews.press?r=" + encodeURIComponent(redirectLink);
-    traffic = "keto.jpeg";
+    if (trafficText === "7ROI-Skin-B") {
+      redirectLink = `${redirectLink}`.replace(
+        "{click_id}",
+        `${req.params.cid}`
+      );
+      redirectLink =
+        `https://centerfoldskin.com/?popclick=${req.params.cid}&r=` +
+        encodeURIComponent(redirectLink);
+    }
+    if (trafficText === "KETOMATIC") {
+      redirectLink = `${redirectLink}`.replace(
+        "{click_id}",
+        `${req.params.cid}`
+      );
+      redirectLink =
+        `https://procore-keto.com?popclick=${req.params.cid}&r=` +
+        encodeURIComponent(redirectLink);
+    }
+    if (trafficText === "Wally-World") {
+      redirectLink = `${redirectLink}`.replace(
+        "{click_id}",
+        `${req.params.cid}`
+      );
+      redirectLink =
+        `https://super-samp.com?popclick=${req.params.cid}&r=` +
+        encodeURIComponent(redirectLink);
+    }
+    if (trafficText === "KETO-WG") {
+      title = "Instant Movie-Star Weight-loss";
+
+      redirectLink = `${redirectLink}`.replace(
+        "{click_id}",
+        `${req.params.cid}`
+      );
+      // redirectLink =
+      //   `https://superketogenics.com?popclick=${req.params.cid}&r=` +
+      //   encodeURIComponent(redirectLink);
+    }
+
+    if (trafficText === "KETO-OS") {
+      redirectLink = `${redirectLink}`.replace(
+        "{click_id}",
+        `${req.params.cid}`
+      );
+      try {
+        let kFirstName = customer.first_name || "";
+        let kLastName = customer.last_name || "";
+        let kaddress = customer.address || "";
+        let kcity = customer.city || "";
+        let kstate = customer.state || "";
+        let kzip = customer.zip || "";
+        let kemail = customer.email || "";
+        let kphone = customer.phone || "";
+        redirectLink =
+          redirectLink +
+          `&shipping_firstname=${kFirstName}&shipping_lastname=${kLastName}&shipping_city=${kcity}&shipping_state=${kstate}&shipping_zipcode=${kzip}&shipping_email=${kemail}&shipping_phone=${kphone}&shipping_country=US&shipping_address=${kaddress}`;
+      } catch (error) {
+        console.log(error);
+      }
+      redirectLink =
+        "https://foxnews.press?r=" + encodeURIComponent(redirectLink);
+      traffic = "keto.jpeg";
+    }
+    // if (trafficText === "CBD-GUMMIES") {
+    //   redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
+    //   redirectLink = "https://foxnews.blog?r=" + encodeURIComponent(redirectLink);
+    //   traffic = "cbdgummies.png";
+    // }
+    if (trafficText === "VOD-SOI") {
+      let phone = customer.phone || "";
+      let phonecode = phone.substring(1, 4);
+      let phoneprefix = phone.substring(4, 7);
+      let phonesuffix = phone.substring(7);
+      let customeraddress = customer.address || "";
+      let customercity = customer.city || "";
+      let customerstate = customer.state || "";
+      let customerzip = customer.zip || "";
+      redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+      redirectLink = `${redirectLink}`;
+      console.log("the new redirect link", redirectLink);
+    }
+    res.render("redirectclickers.ejs", {
+      traffic,
+      title,
+      redirectLink,
+      customer,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      error: true,
+    });
   }
-  // if (trafficText === "CBD-GUMMIES") {
-  //   redirectLink = `${redirectLink}`.replace("{click_id}", `${req.params.cid}`);
-  //   redirectLink = "https://foxnews.blog?r=" + encodeURIComponent(redirectLink);
-  //   traffic = "cbdgummies.png";
-  // }
-  if (trafficText === "VOD-SOI") {
-    let phone = customer.phone || "";
-    let phonecode = phone.substring(1, 4);
-    let phoneprefix = phone.substring(4, 7);
-    let phonesuffix = phone.substring(7);
-    let customeraddress = customer.address || "";
-    let customercity = customer.city || "";
-    let customerstate = customer.state || "";
-    let customerzip = customer.zip || "";
-    redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
-    redirectLink = `${redirectLink}`;
-    console.log("the new redirect link", redirectLink);
-  }
-  res.render("redirectclickers.ejs", {
-    traffic,
-    title,
-    redirectLink,
-    customer,
-  });
 });
 
 // http://www.domain-secured.com/ref-gummies?click_id={click_id}&pdata=2514
