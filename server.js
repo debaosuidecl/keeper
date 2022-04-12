@@ -1112,7 +1112,7 @@ app.get("/ref-click-through-track", async (req, res) => {
   // const {click_id} = req.query;
   console.log("query", req.query);
   let source = "";
-  const { click_id, sub_id, dataowner, traffic } = req.query;
+  const { click_id, sub_id, dataowner, traffic } = req.query; // click tryough
   //fdsf
   try {
     await ACCESS_HOST_CLICK_THROUGH(click_id, sub_id, dataowner, traffic);
