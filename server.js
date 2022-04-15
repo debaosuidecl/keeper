@@ -280,6 +280,29 @@ app.get("/pingmeta2/:cid", async (req, res) => {
   });
 });
 
+app.get("/api/payday-callback-5", async (req, res) => {
+  const query = req.query;
+  console.log(query, 28555555555555555555555);
+  try {
+    res.send({
+      message: "hit server",
+    });
+
+    await ACCESS_HOST_FOR_DANIELA_POST(
+      query.click_id,
+      query.traffic,
+      "http://red.powersms.land/api/payday-callback-5",
+      query.sub_id,
+      query.source,
+      query.payout
+    );
+
+    console.log("Saved!!");
+    // res.
+  } catch (error) {
+    console.log(error);
+  }
+});
 // http://www.domain-secured.com/ref?click_id={click_id}&pdata=25114325 GLENN
 // http://www.domain-secured.com/ref?click_id={click_id}&pdata=412294 Yancy
 // http://www.domain-secured.com/ref?clickSDSD_id={click_id}&pdata=2514
@@ -1294,16 +1317,29 @@ async function ACCESS_HOST_META(
       method: "GET",
     };
     request(options, function (error, response, body) {
-      // if (!error && response.statusCode == 200) {
-      //   // console.log(body);
-      //   resolve(body);
-      // } else {
-
       resolve(body);
     });
   });
 }
 
+async function ACCESS_HOST_FOR_DANIELA_POST(
+  click_id,
+  traffic,
+  url = `http://red.powersms.land/api/payday-callback-5`,
+  sub_id,
+  source,
+  payout
+) {
+  return new Promise((resolve, reject) => {
+    let options = {
+      url: `${url}?click_id=${click_id}&traffic=${traffic}&sub_id=${sub_id}&source=${source}&payout=${payout}`,
+      method: "GET",
+    };
+    request(options, function (error, response, body) {
+      resolve(body);
+    });
+  });
+}
 async function DownloadPDF(filename) {
   return new Promise((resolve, reject) => {
     axios
