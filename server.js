@@ -171,14 +171,14 @@ app.get("/pingmeta/:cid", async (req, res) => {
 });
 
 app.get("/pingmeta2/:cid", async (req, res) => {
-  console.log(req.query, 162);
-  var ip =
-    req.headers["x-forwarded-for"] ||
-    req.connection.remoteAddress ||
-    req.socket.remoteAddress ||
-    (req.connection.socket ? req.connection.socket.remoteAddress : null);
-  console.log(ip, "this is the ip");
   try {
+    // console.log(req.query, 162);
+    var ip =
+      req.headers["x-forwarded-for"] ||
+      req.connection.remoteAddress ||
+      req.socket.remoteAddress ||
+      (req.connection.socket ? req.connection.socket.remoteAddress : null);
+    console.log(ip, "this is the ip");
     if (ipmap.hasOwnProperty(ip)) {
       console.log("you are not supposed to be accessing this route", ip);
 
@@ -206,16 +206,10 @@ app.get("/pingmeta2/:cid", async (req, res) => {
       console.log(great, "not skin");
     }
   }
-  let redirectDetails = "";
+  let redirectDetails = ""; //test
 
   if (req.query.uid) {
     try {
-      // redirectDetails = await ACCESS_HOST_META(
-      //   req.params.cid,
-      //   req.query.traffic,
-      //   req.query.redirect,
-      //   SUBSENDERMAP[req.query.uid]
-      // );
     } catch (error) {
       console.log(error);
     }
