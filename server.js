@@ -282,6 +282,12 @@ app.get("/pingmeta2/:cid", async (req, res) => {
 
 app.get("/api/payday-callback-5", async (req, res) => {
   const query = req.query;
+  console.log(
+    query,
+    "POOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOP"
+  );
+  let pcid = query.pcid;
+  let [click_id, dataowner, sub_id] = pcid.split("pp-pp");
   console.log(query, 28555555555555555555555);
   try {
     res.send({
@@ -289,11 +295,11 @@ app.get("/api/payday-callback-5", async (req, res) => {
     });
 
     await ACCESS_HOST_FOR_DANIELA_POST(
-      query.click_id,
+      click_id,
       query.traffic,
       "http://red.powersms.land/api/payday-callback-5",
-      query.sub_id,
-      query.source,
+      sub_id,
+      dataowner,
       query.payout
     );
 
