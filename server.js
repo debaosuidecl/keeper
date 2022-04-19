@@ -872,6 +872,56 @@ app.get("/ping/:cid", async (req, res) => {
       }
     }
 
+    if (trafficText === "CVS" && customer && customer.cid) {
+      console.log(
+        "we are testing cvs oohhhhhh!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+      );
+      console.log(
+        "we are testing cvs oohhhhhh!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+      );
+      console.log(
+        "we are testing cvs oohhhhhh!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+      );
+      console.log(
+        "we are testing cvs oohhhhhh!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+      );
+      console.log(
+        "we are testing cvs oohhhhhh!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+      );
+      console.log(
+        "we are testing cvs oohhhhhh!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+      );
+      title = "CVS";
+      redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
+
+      let gender = "m";
+      try {
+        // find gender
+
+        gender = "m";
+      } catch (error) {
+        console.log(error);
+      }
+      try {
+        let kFirstName = customer.first_name || "";
+        let kLastName = customer.last_name || "";
+        let kaddress = customer.address || "";
+        let kcity = customer.city || "";
+        let kstate = customer.state || "";
+        let kzip = customer.zip || "";
+        let kgender = gender[0] || "m";
+        let kemail = customer.email || "";
+        let kphone = getusphoneformat(customer.phone) || "";
+        redirectLink = `${redirectLink}&phone=${kphone}&firstname=${kFirstName}&lastname=${kLastName}&email=${kemail}&city=${kcity}&state=${kstate}&zip=${kzip}&address=${kaddress}&gender=${kgender}`;
+        console.log(
+          "we are testing cvs oohhhhhh!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+          redirectLink
+        );
+      } catch (error) {
+        console.log(error, 4209302930193019301390139);
+      }
+    }
+
     if (trafficText === "GAS_CARD_HT" && customer && customer.cid) {
       // title = "50K";
       redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
