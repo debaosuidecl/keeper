@@ -594,8 +594,8 @@ app.get("/ping-revamp-meta/:cid", async (rq, res) => {
 // &d8={dobday}&d9={dobyear}&d10={phonecode}&d11={phoneprefix}&d12={phonesuffix}
 // &d13={address1}&d14={address2}&d15={city}&d16={state}&d17={zippost}
 app.get("/ping/:cid", async (req, res) => {
+  let newip = req.query.ip;
   try {
-    let newip = req.query.ip;
     if (!newip) {
       newip =
         req.headers["x-forwarded-for"] ||
