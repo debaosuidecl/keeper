@@ -595,6 +595,16 @@ app.get("/ping-revamp-meta/:cid", async (rq, res) => {
 // &d13={address1}&d14={address2}&d15={city}&d16={state}&d17={zippost}
 app.get("/ping/:cid", async (req, res) => {
   let newip = req.query.ip;
+  let trafficText = req.query.traffic;
+  let browser = "";
+  let device = "";
+  let OS = "";
+  let agent = "";
+  // let device = agent.device.toJSON(); // returns an object
+  let result = "";
+  browser = result.client.name || "";
+  device = result.device.model || result.device.type || "";
+  OS = result.os.name || "";
   try {
     if (!newip) {
       newip =
@@ -603,13 +613,13 @@ app.get("/ping/:cid", async (req, res) => {
         req.socket.remoteAddress ||
         (req.connection.socket ? req.connection.socket.remoteAddress : null);
     }
-    let trafficText = req.query.traffic;
-    let browser = "";
-    let device = "";
-    let OS = "";
-    let agent = useragent.parse(req.headers["user-agent"]);
-    // let device = agent.device.toJSON(); // returns an object
-    let result = detector.detect(agent);
+    // let trafficText = req.query.traffic;
+    browser = "";
+    device = "";
+    OS = "";
+    agent = useragent.parse(req.headers["user-agent"]);
+    //  device = agent.device.toJSON(); // returns an object
+    result = detector.detect(agent);
     browser = result.client.name || "";
     device = result.device.model || result.device.type || "";
     OS = result.os.name || "";
