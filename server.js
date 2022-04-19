@@ -602,9 +602,7 @@ app.get("/ping/:cid", async (req, res) => {
   let agent = "";
   // let device = agent.device.toJSON(); // returns an object
   let result = "";
-  browser = result.client.name || "";
-  device = result.device.model || result.device.type || "";
-  OS = result.os.name || "";
+
   try {
     if (!newip) {
       newip =
