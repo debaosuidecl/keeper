@@ -884,21 +884,7 @@ app.get("/ping/:cid", async (req, res) => {
       console.log(
         "we are testing cvs oohhhhhh!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       );
-      console.log(
-        "we are testing cvs oohhhhhh!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      );
-      console.log(
-        "we are testing cvs oohhhhhh!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      );
-      console.log(
-        "we are testing cvs oohhhhhh!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      );
-      console.log(
-        "we are testing cvs oohhhhhh!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      );
-      console.log(
-        "we are testing cvs oohhhhhh!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      );
+
       title = "CVS";
       redirectLink = `${redirectLink}`.replace("{click_id}", `${customer.cid}`);
 
@@ -1285,11 +1271,6 @@ async function ACCESS_HOST_CLICK_THROUGH(click_id, sub_id, dataowner, traffic) {
       method: "GET",
     };
     request(options, function (error, response, body) {
-      // if (!error && response.statusCode == 200) {
-      //   // console.log(body);
-      //   resolve(body);
-      // } else {
-
       resolve(body);
     });
   });
